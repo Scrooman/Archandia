@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Otwieranie Skrzynki</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            </header>
+
+        <main id="mainContent" class="screen open-chest-screen active-screen">
+            <div class="chest-display-area">
+                <div class="chest-wrapper">
+                    <img src="php4img_item_9177.jpg" alt="Skrzynka" id="chestImage" class="chest-image">
+                    <div class="item-animation-container" id="itemAnimationContainer">
+                        <img src="php4img_item_2824.jpg" alt="Przedmiot" id="droppedItem" class="dropped-item">
+                    </div>
+                </div>
+            </div>
+            <button id="openChestButton" class="action-button">Otwórz</button>
+        </main>
+
+        <div id="mobsScreen" class="screen">
+            <h2>Mobs</h2>
+            <p>Zawartość ekranu Mobs...</p>
+        </div>
+        <div id="questScreen" class="screen">
+            <div class="questScreen-container">
+                <div class="lista-zadan-panel">
+                    <h3>Dostępne Zadania</h3>
+                    <ul id="listaZadan">
+                        </ul>
+                </div>
+
+                <div class="szczegoly-zadania-panel" style="display: none;">
+                    <h3 id="tytulZadania"></h3>
+                    <p id="opisZadania"></p>
+                    <p><strong>Endpoint:</strong> <code id="startingEndpointInfo"></code></p>
+                    <p><strong>HTTP Method:</strong> <code id="metodaHttpInfo">GET</code></p>
+                    <h4>Requirements:</h4>
+                    <ul id="wymaganePrzedmiotyLista"></ul>
+                    <h4>Rewards:</h4>
+                    <ul id="rewardList"></ul>
+                    <p><strong>Available till:</strong> <code id="questAvailableTillInfo"></code></p>
+                    <button id="startQuest" class="action-button">Start Quest</button>
+                    <div id="tasksContainer"></div>
+                    <div id="requestsSequenceContainer"></div>
+
+
+                    <div class="edytor-json-kontener">
+                        <label for="edytorJsonInput">Treść żądania (JSON):</label>
+                        <textarea id="edytorJsonInput" rows="12" placeholder="Wpisz tutaj swoje żądanie w formacie JSON..."></textarea>
+                        <button id="podpowiedzJsonButton" class="utility-button">Pokaż przykład JSON</button>
+                    </div>
+
+                    <button id="wyslijZadanieButton" class="action-button">Wyślij Żądanie</button>
+                    <div id="informacjaZwrotnaZadania" class="feedback-message"></div>
+                </div>
+            </div>
+        </div>
+        <div id="inventoryScreen" class="screen">
+            <h2>Inventory</h2>
+            <p>Zawartość ekranu Inventory...</p>
+        </div>
+        <div id="opcjeScreen" class="screen">
+            <h2>Opcje</h2>
+            <p>Zawartość ekranu Opcje...</p>
+        </div>
+
+        <nav class="bottom-menu">
+            <button class="menu-button" data-target="questScreen">Quest</button>
+            <button class="menu-button" data-target="mobsScreen">Mobs</button>
+            <button class="menu-button main-menu-button active" data-target="open-chest-screen">Otwórz</button>
+            <button class="menu-button" data-target="inventoryScreen">Inventory</button>
+            <button class="menu-button" data-target="opcjeScreen">Opcje</button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
