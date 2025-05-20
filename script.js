@@ -608,7 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepare headers
         const headers = {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc3MjQxODB9.UuB7cybi_afvoC4YVLbSi9QMQc40ZWltcNBzukbCJrk'
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc3NjAxMDZ9.pxjNwCkFxLJ2vqy6nTUk88glb9_l-Izw2gkBQa-82ag'
         };
         // Add Content-Type for methods with body
         if (['POST', 'PUT', 'PATCH'].includes(requestData.method.toUpperCase())) {
