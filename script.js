@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startingEndpoint: "/archlord/elgore/supply_drop", 
             metodaHttp: "PUT",
             questAvailableTill: "2025-12-31T23:59:59Z", 
+            questEndsAt: "2025-06-30T23:59:59Z", 
             wymaganePrzedmioty: [ 
                 { idPrzedmiotu: "artifact_พลังงาน_01", nazwa: "Rdzeń Energii", ilosc: 2, wymaganeWlasciwosci: { rzadkosc: "rzadki" } },
                 { idPrzedmiotu: "scroll_ochrony_03", nazwa: "Zwoj Ochrony Większej", ilosc: 1 }
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startingEndpoint: "/archlord/chantra/crystal_order",
             metodaHttp: "PUT",
             questAvailableTill: "2025-12-31T23:59:59Z",
+            questEndsAt: "2025-06-30T23:59:59Z", 
             wymaganePrzedmioty: [
                 { idPrzedmiotu: "crystal_mocy_gorski", nazwa: "Górski Kryształ Mocy", ilosc: 5, wymaganeWlasciwosci: { czystosc: "wysoka" } },
             ],
@@ -70,6 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // === SEKCJA EKRANU QUEST ===
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc3MTkzMTN9.FZTeEgOPx3wnrmEGLad0jJCZk6el0rCzCksoUPs5iA4";
+
+
     const ekranZdobywaj = document.getElementById('questScreen');
     const listaZadanUI = document.getElementById('listaZadan');
     const panelSzczegolowZadaniaUI = document.querySelector('.szczegoly-zadania-panel');
@@ -81,12 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startingEndpointInfoUI = document.getElementById('startingEndpointInfo');
     const metodaHttpInfoUI = document.getElementById('metodaHttpInfo');
     const questavailableInfoUI = document.getElementById('questAvailableTillInfo');
-
-    const edytorJsonInput = document.getElementById('edytorJsonInput');
-    const podpowiedzJsonButton = document.getElementById('podpowiedzJsonButton');
-    const wyslijZadanieButton = document.getElementById('wyslijZadanieButton');
-    const informacjaZwrotnaZadaniaUI = document.getElementById('informacjaZwrotnaZadania');
-
+    const questEndsAtInfoUI = document.getElementById('questEndsInfo');
 
 
     // === Sckrypt dla wyświetlania sekcji Requests w ekranie Zadania ===
@@ -113,19 +114,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const tabContentContainer = document.createElement('div');
         tabContentContainer.id = `${requestsSectionId}-content`;
 
-        const sequenceSection = document.createElement('div');
-        sequenceSection.classList.add('sequence-section');
-        sequenceSection.id = `${requestsSectionId}-sequence`;
-        sequenceSection.innerHTML = '<h3>Sekwencja Żądań</h3><div id="' + requestsSectionId + '-sequence-container"></div>';
+
 
         const addTabButton = document.createElement('button');
-        addTabButton.textContent = '+ Nowe Żądanie';
-        addTabButton.onclick = () => addNewTab(requestsSectionId);
+        addTabButton.textContent = '+ Request';
+        addTabButton.id = `add-request-tab-button`;
+        addTabButton.onclick = () => {
+            addNewTab(requestsSectionId);
+        };
         tabsContainer.appendChild(addTabButton);
 
         taskSection.appendChild(tabsContainer);
         taskSection.appendChild(tabContentContainer);
-        taskSection.appendChild(sequenceSection);
 
         document.getElementById('tasksContainer').appendChild(taskSection);
 
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestsSection.activeTabId = tabId;
 
         const tabButton = document.createElement('button');
-        tabButton.textContent = `Żądanie ${requestsSection.tabCounter}`;
+        tabButton.textContent = `Request ${requestsSection.tabCounter}`;
         tabButton.id = `${tabId}-button`;
         tabButton.onclick = () => switchToTab(requestsSectionId, tabId);
 
@@ -153,34 +153,135 @@ document.addEventListener('DOMContentLoaded', () => {
         tabContent.classList.add('tab-content');
         tabContent.id = `${tabId}-content`;
         tabContent.innerHTML = `
-            <label for="${tabId}-method">Metoda HTTP:</label>
-            <select id="${tabId}-method">
+            <label class="request-section-label" for="${tabId}-method">HTTP Method:</label>
+            <select class="select-field" id="${tabId}-method">
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
                 <option value="PUT">PUT</option>
                 <option value="DELETE">DELETE</option>
                 <option value="PATCH">PATCH</option>
-                <option value="HEAD">HEAD</option>
-                <option value="OPTIONS">OPTIONS</option>
             </select>
 
-            <label for="${tabId}-url">URL:</label>
-            <input type="text" id="${tabId}-url" placeholder="https://api.example.com/data">
+            <label class="request-section-label" for="${tabId}-url">URL:</label>
+            <input class="text-area-input-field" type="text" id="${tabId}-url" placeholder="https://api.example.com/data">
 
-            <label for="${tabId}-body">Body (JSON):</label>
+            <label class="request-section-label" for="${tabId}-headers">Query Params:</label>
+            <div class="request-section-labels-container" id="${tabId}-query-params-container">
+                <div class="request-section-labels-key-value-pair-container">
+                    <div class="request-section-labels-row-container" id="${tabId}-query-param-row-0-key-row">
+                        <label class="request-section-query-params-label" for="${tabId}-query-param-key">Key:</label>
+                        <input class="text-area-input-field" type="text" id="${tabId}-query-param-row-0-key" placeholder="Key">
+                    </div>
+                    <div class="request-section-labels-row-container" id="${tabId}-query-param-row-0-value-row">
+                        <label class="request-section-query-params-label" for="${tabId}-query-param-value">Value:</label>
+                        <input class="text-area-input-field" type="text" id="${tabId}-query-param-row-0-value" placeholder="Value">
+                    </div>
+                </div>
+            </div>
+            <div class="request-section-labels-row-container">
+                <button id="addNewQueryParamRow" class="utility-button">Add Param</button>
+            </div>
+            
+
+            <label class="request-section-label" for="${tabId}-body">Request Body (JSON):</label>
             <textarea id="${tabId}-body" placeholder='{"key": "value"}'></textarea>
 
             <div class="button-group">
-                <button onclick="sendRequest('${tabId}')">Wyślij Żądanie</button>
+                <button class="action-button" id="${tabId}-send-button">Send Request</button>
             </div>
 
-            <label for="${tabId}-response">Odpowiedź:</label>
+            <label class="request-section-label" for="${tabId}-response">Response:</label>
             <textarea id="${tabId}-response" readonly data-response-keys="[]"></textarea>
         `;
 
         document.getElementById(`${requestsSectionId}-content`).appendChild(tabContent);
         switchToTab(requestsSectionId, tabId);
     }
+
+    
+
+    // Funkcja do dodawania nowej pary Key/Value
+    let queryParamRowCounter = 0;
+
+    function addQueryParamRow(tabId) {
+        const container = document.getElementById(`${tabId}-query-params-container`);
+        if (!container) return;
+
+        queryParamRowCounter++;
+        const uniqueId = `${tabId}-query-param-row-${queryParamRowCounter}`;
+
+        // Tworzenie pary Key
+        const keyValuePairContainer = document.createElement('div');
+        keyValuePairContainer.className = 'request-section-labels-key-value-pair-container';
+        const keyRow = document.createElement('div');
+        keyRow.className = 'request-section-labels-row-container';
+        keyRow.id = `${uniqueId}-key-row`;
+        const keyLabel = document.createElement('label');
+        keyLabel.className = 'request-section-query-params-label';
+        keyLabel.textContent = 'Key:';
+        keyLabel.setAttribute('for', `${uniqueId}-key`);
+        const keyInput = document.createElement('input');
+        keyInput.className = 'text-area-input-field';
+        keyInput.type = 'text';
+        keyInput.placeholder = 'Key';
+        keyInput.setAttribute('name', 'query-param-key');
+        keyInput.id = `${uniqueId}-key`;
+        keyValuePairContainer.appendChild(keyRow);
+        keyValuePairContainer.appendChild(keyLabel);
+        keyValuePairContainer.appendChild(keyInput);
+
+        keyRow.appendChild(keyLabel);
+        keyRow.appendChild(keyInput);
+
+        // Tworzenie pary Value
+        const valueRow = document.createElement('div');
+        valueRow.className = 'request-section-labels-row-container';
+        valueRow.id = `${uniqueId}-value-row`;
+        const valueLabel = document.createElement('label');
+        valueLabel.className = 'request-section-query-params-label';
+        valueLabel.textContent = 'Value:';
+        valueLabel.setAttribute('for', `${uniqueId}-value`);
+        const valueInput = document.createElement('input');
+        valueInput.className = 'text-area-input-field';
+        valueInput.type = 'text';
+        valueInput.placeholder = 'Value';
+        valueInput.setAttribute('name', 'query-param-value');
+        valueInput.id = `${uniqueId}-value`;
+        valueRow.appendChild(valueLabel);
+        valueRow.appendChild(valueInput);
+
+        // Dodaj do kontenera NA KOŃCU
+        container.appendChild(keyValuePairContainer);
+        keyValuePairContainer.appendChild(keyRow);
+        keyValuePairContainer.appendChild(valueRow);
+    }
+
+    // Delegacja zdarzeń dla dynamicznych przycisków w kontenerze
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'addNewQueryParamRow') {
+            // Szukamy kontenera z parami w rodzeństwie (poprzedni element względem przycisku)
+            const rowContainer = e.target.closest('.request-section-labels-row-container');
+            let container = null;
+            if (rowContainer) {
+                // Szukamy poprzedniego rodzeństwa, które jest .request-section-labels-container
+                let prev = rowContainer.previousElementSibling;
+                while (prev) {
+                    if (prev.classList.contains('request-section-labels-container')) {
+                        container = prev;
+                        break;
+                    }
+                    prev = prev.previousElementSibling;
+                }
+            }
+            if (container && container.id) {
+                // Wyciągnij tabId z id kontenera
+                // id ma postać "${tabId}-query-params-container"
+                const tabId = container.id.replace('-query-params-container', '');
+                addQueryParamRow(tabId);
+            }
+            e.preventDefault();
+        }
+    });
 
     function switchToTab(requestsSectionId, tabId) {
         const requestsSection = requestsSectionItem[requestsSectionId];
@@ -199,7 +300,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // === Sckrypt dla wyświetlania sekcji Requests Sequence w ekranie Zadania ===
+    let methodAndUrlsFieldCounter = 1;
 
+    // Przenieś opcje do zmiennej globalnej/metodowej
+    const sequenceOptions = [
+        { value: "1", label: "GET: get_manual?ItemType=Crossbow&ItemName=Advance Crossbow" },
+        { value: "2", label: "POST: archandia/post_order/golundo?BlacksmithId=2aLyaegQQdS7&ManualId=vN1qOsHVRkq2" }
+        // Dodaj kolejne opcje tutaj
+    ];
+
+    // Funkcja do dodawania nowej opcji do sequenceOptions
+    function dodajOpcjeDoSequenceOptions(value, label) {
+        sequenceOptions.push({ value, label });
+    }
+
+    // Aktualizuje wszystkie selecty z klasą sequence-select-field na podstawie sequenceOptions
+    function updateSequenceSelectFields() {
+        const selects = document.querySelectorAll('.sequence-select-field');
+        selects.forEach(select => {
+        // Zachowaj aktualnie wybraną wartość
+        const currentValue = select.value;
+        // Wyczyść istniejące opcje
+        select.innerHTML = '';
+        // Dodaj nowe opcje
+        sequenceOptions.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.textContent = opt.label;
+            select.appendChild(option);
+        });
+        // Przywróć wybraną wartość jeśli istnieje
+        if ([...select.options].some(opt => opt.value === currentValue)) {
+            select.value = currentValue;
+        }
+        });
+    }
 
     // Funkcja dodająca Sekcję z Requestam Sequence dla Zadania
     function addNewSequenceTab() {
@@ -214,54 +349,94 @@ document.addEventListener('DOMContentLoaded', () => {
         summary.textContent = `Requests Sequence`;
         taskSection.appendChild(summary);
 
-        //const tabsContainer = document.createElement('div');
-        //tabsContainer.classList.add('tabs-container');
-        //tabsContainer.id = `${sequenceTabId}-tabs`;
-
         const tabContentContainer = document.createElement('div');
         tabContentContainer.id = `${sequenceTabId}-content`;
 
-        const sequenceSection = document.createElement('div');
-        sequenceSection.classList.add('sequence-section');
-        sequenceSection.id = `${sequenceTabId}-sequence`;
-        sequenceSection.innerHTML = '<h3>Sekwencja Żądań</h3><div id="' + sequenceTabId + '-sequence-container"></div>';
-
-        //const addTabButton = document.createElement('button');
-        //addTabButton.textContent = '+ Nowe Żądanie';
-        //addTabButton.onclick = () => addNewTab(sequenceTabId);
-        //tabsContainer.appendChild(addTabButton);
 
         //taskSection.appendChild(tabsContainer);
         taskSection.appendChild(tabContentContainer);
-        taskSection.appendChild(sequenceSection);
+
+          
 
         document.getElementById('requestsSequenceContainer').appendChild(taskSection);
-        let tabId = "requestSequenceTab-1"
+        let tabId = "requestSequenceTab-1";
         const tabContent = document.createElement('div');
         tabContent.classList.add('request-sequence-tab-content');
         tabContent.id = `${tabId}-content`;
+
+        // Generuj <option> na podstawie sequenceOptions
+        const optionsHtml = sequenceOptions.map(opt => 
+            `<option value="${opt.value}">${opt.label}</option>`
+        ).join('');
+
         tabContent.innerHTML = `
-            <label for="${tabId}-method">Metoda HTTP:</label>
-            <select id="${tabId}-method">
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-                <option value="DELETE">DELETE</option>
-                <option value="PATCH">PATCH</option>
-                <option value="HEAD">HEAD</option>
-                <option value="OPTIONS">OPTIONS</option>
-            </select>
+            <label class="request-section-label" for="${tabId}-method-url">Methods and URLs:</label>
+            <div class="sequence-section-labels-container">
+            <div class="sequence-section-labels-row-container">
+                <label class="sequence-section-method-url-label" id="${tabId}-method-url-label">${methodAndUrlsFieldCounter}.</label>
+                <select class="sequence-select-field" id="${tabId}-method-url-${methodAndUrlsFieldCounter}">
+                ${optionsHtml}
+                </select>
+            </div>
+            </div>
         `;
+        methodAndUrlsFieldCounter++;
 
         document.getElementById(`${sequenceTabId}-content`).appendChild(tabContent);
 
-        //addNewTab(sequenceTabId);
     }
 
-    document.getElementById('startQuest').addEventListener('click', addNewSequenceTab);
 
-    
+    //Funckja do dodawania nowej pary metod i URL
 
+    function addMethodAndUrlPair() {
+        dodajOpcjeDoSequenceOptions("3", "PUT: archandia/put_order/golundo?BlacksmithId=2aLyaegQQdS7&ManualId=vN1qOsHVRkq2");
+        updateSequenceSelectFields();
+
+        const container = document.querySelector('.request-sequence-tab-content');
+        if (!container) return;
+
+        const methodAndUrlPairContainer = document.createElement('div');
+        methodAndUrlPairContainer.className = 'sequence-section-labels-container';
+        const methodAndUrlRow = document.createElement('div');
+        methodAndUrlRow.className = 'sequence-section-labels-row-container';
+        methodAndUrlRow.id = `sequence1-method-url-label`;
+        const methodAndUrlLabel = document.createElement('label');
+        methodAndUrlLabel.className = 'sequence-section-method-url-label';
+        methodAndUrlLabel.textContent = `${methodAndUrlsFieldCounter}.`;
+        const methodAndUrlSelect = document.createElement('select');
+        methodAndUrlSelect.className = 'sequence-select-field';
+        methodAndUrlSelect.id = `sequence1-method-url-${methodAndUrlsFieldCounter}`;
+        methodAndUrlSelect.innerHTML = `
+            ${sequenceOptions.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('')}
+        `;
+        methodAndUrlRow.appendChild(methodAndUrlLabel);
+        methodAndUrlRow.appendChild(methodAndUrlSelect);
+        methodAndUrlPairContainer.appendChild(methodAndUrlRow);
+
+        // Dodaj do kontenera NA KOŃCU
+        container.appendChild(methodAndUrlPairContainer);
+        methodAndUrlsFieldCounter++;
+        
+    }
+
+    // Delegacja zdarzeń dla dynamicznych przycisków w kontenerze
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'add-request-tab-button') {
+            addMethodAndUrlPair();
+            e.preventDefault();
+        }
+    });
+
+    // Zmiany na GUI po wybraniu Start Quest
+    document.getElementById('startQuest').addEventListener('click', function() {
+        addNewSequenceTab(); // wywołaj funkcję
+        this.style.display = 'none'; // ukryj przycisk Start Quest
+        document.getElementById('cancelQuest').style.display = 'inline-block'; // pokaż przycisk Anuluj
+        document.getElementById('availableTillLabel').style.display = 'none'; // usuń etykietę Available Till
+        document.getElementById('questsEndsLabel').style.display = 'block'; // pokaż etykietę Quest Ends
+        document.getElementById('completeQuest').style.display = 'inline-block'; // pokaż przycisk Complete Quest
+    });
 
 
     let aktualnieWybraneZadanie = null;
@@ -269,8 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function inicjalizujEkranQuest() {
         wyswietlListeZadan();
         panelSzczegolowZadaniaUI.style.display = 'none';
-        informacjaZwrotnaZadaniaUI.textContent = '';
-        informacjaZwrotnaZadaniaUI.className = 'feedback-message'; // Reset stylu
     }
 
     function wyswietlListeZadan() {
@@ -285,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function wybierzZadanie(idZadania) {
+        methodAndUrlsFieldCounter = 1; // Resetuj licznik pól metody i URL
         aktualnieWybraneZadanie = dostepneZadania.find(z => z.id === idZadania);
         if (!aktualnieWybraneZadanie) return;
 
@@ -308,11 +482,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        document.getElementById('cancelQuest').style.display = 'none'; // Ukryj przycisk CancelQuest
+        document.getElementById('questsEndsLabel').style.display = 'none'; // Ukryj etykietę Quest Ends
+        document.getElementById('startQuest').style.display = 'inline-block'; // Pokaż przycisk StartQuest
+        document.getElementById('availableTillLabel').style.display = 'block'; // pokaż etykietę Available Till
+
+
+        
+
         tytulZadaniaUI.textContent = aktualnieWybraneZadanie.tytul;
         opisZadaniaUI.textContent = aktualnieWybraneZadanie.opis;
         startingEndpointInfoUI.textContent = aktualnieWybraneZadanie.startingEndpoint;
         metodaHttpInfoUI.textContent = aktualnieWybraneZadanie.metodaHttp;
         questavailableInfoUI.textContent = aktualnieWybraneZadanie.questAvailableTill; 
+        questEndsAtInfoUI.textContent = aktualnieWybraneZadanie.questEndsAt;
 
         wymaganePrzedmiotyListaUI.innerHTML = '';
         rewardListUi.innerHTML = ''; 
@@ -340,17 +523,6 @@ document.addEventListener('DOMContentLoaded', () => {
             rewardListUi.appendChild(li);
         });
 
-        wyslijZadanieButton.disabled = !czyMoznaPodjacZadanie;
-        if (!czyMoznaPodjacZadanie) {
-            informacjaZwrotnaZadaniaUI.textContent = "Nie posiadasz wszystkich wymaganych przedmiotów, aby podjąć to zadanie.";
-            informacjaZwrotnaZadaniaUI.className = 'feedback-message error';
-        } else {
-            informacjaZwrotnaZadaniaUI.textContent = '';
-            informacjaZwrotnaZadaniaUI.className = 'feedback-message';
-        }
-
-
-        edytorJsonInput.value = ''; // Wyczyść edytor przy wyborze nowego zadania
         panelSzczegolowZadaniaUI.style.display = 'block';
     }
 
@@ -359,13 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return Object.entries(wlasciwosci).map(([klucz, wartosc]) => `${klucz}: ${wartosc}`).join(', ');
     }
 
-    podpowiedzJsonButton.addEventListener('click', () => {
-        if (aktualnieWybraneZadanie && aktualnieWybraneZadanie.oczekiwanyJsonPrzyklad) {
-            edytorJsonInput.value = JSON.stringify(aktualnieWybraneZadanie.oczekiwanyJsonPrzyklad, null, 2); // Formatowanie z wcięciami
-        } else {
-            alert("Dla tego zadania nie zdefiniowano przykładu JSON.");
-        }
-    });
+
 
     function sprawdzPrzedmiotWEkwipunku(idPrzedmiotu, wymaganaIlosc, wymaganeWlasciwosci = null) {
         const przedmiot = ekwipunekUzytkownika.find(p => p.idPrzedmiotu === idPrzedmiotu);
@@ -382,151 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true; // Użytkownik posiada przedmiot w odpowiedniej ilości i z właściwościami
     }
 
-    wyslijZadanieButton.addEventListener('click', () => {
-        if (!aktualnieWybraneZadanie) return;
 
-        informacjaZwrotnaZadaniaUI.textContent = '';
-        informacjaZwrotnaZadaniaUI.className = 'feedback-message';
-
-        // 1. Sprawdzenie, czy użytkownik nadal ma przedmioty (na wszelki wypadek)
-        let czyNadalMaPrzedmioty = true;
-        aktualnieWybraneZadanie.wymaganePrzedmioty.forEach(wymPrzedmiot => {
-            if (!sprawdzPrzedmiotWEkwipunku(wymPrzedmiot.idPrzedmiotu, wymPrzedmiot.ilosc, wymPrzedmiot.wymaganeWlasciwosci)) {
-                czyNadalMaPrzedmioty = false;
-            }
-        });
-
-        if (!czyNadalMaPrzedmioty) {
-            informacjaZwrotnaZadaniaUI.textContent = "Błąd: Straciłeś wymagane przedmioty. Sprawdź ekwipunek.";
-            informacjaZwrotnaZadaniaUI.className = 'feedback-message error';
-            wyslijZadanieButton.disabled = true;
-            return;
-        }
-
-        // 2. Parsowanie JSON z edytora
-        let payloadUzytkownika;
-        try {
-            payloadUzytkownika = JSON.parse(edytorJsonInput.value);
-        } catch (error) {
-            informacjaZwrotnaZadaniaUI.textContent = `Błąd w formacie JSON: ${error.message}`;
-            informacjaZwrotnaZadaniaUI.className = 'feedback-message error';
-            return;
-        }
-
-        // 3. Symulacja wysłania żądania i walidacji "backendowej"
-        wyslijZadanieButton.disabled = true; // Zapobiegaj wielokrotnemu klikaniu
-        informacjaZwrotnaZadaniaUI.textContent = "Przetwarzanie żądania...";
-        informacjaZwrotnaZadaniaUI.className = 'feedback-message';
-
-
-        // Symulacja opóźnienia sieciowego
-        setTimeout(() => {
-            const { sukces, wiadomosc, zuzytePrzedmioty } = walidujZadaniePoStronieSerwera(aktualnieWybraneZadanie, payloadUzytkownika, ekwipunekUzytkownika);
-
-            if (sukces) {
-                informacjaZwrotnaZadaniaUI.textContent = `Sukces! ${wiadomosc || 'Zadanie wykonane poprawnie.'}`;
-                informacjaZwrotnaZadaniaUI.className = 'feedback-message success';
-
-                // Usuń zużyte przedmioty z ekwipunku
-                if (zuzytePrzedmioty) {
-                    zuzytePrzedmioty.forEach(zp => {
-                        const index = ekwipunekUzytkownika.findIndex(p => p.idPrzedmiotu === zp.idPrzedmiotu);
-                        if (index > -1) {
-                            ekwipunekUzytkownika[index].ilosc -= zp.ilosc;
-                            if (ekwipunekUzytkownika[index].ilosc <= 0) {
-                                ekwipunekUzytkownika.splice(index, 1); // Usuń przedmiot, jeśli ilość spadnie do 0
-                            }
-                        }
-                    });
-                }
-                // Dodaj nagrody (tutaj można rozbudować logikę)
-                console.log("Dodano nagrodę:", aktualnieWybraneZadanie.nagroda);
-                // TODO: Implementacja dodawania nagród do statystyk/ekwipunku gracza
-
-                // Odśwież widok lub zablokuj zadanie
-                // np. usuń zadanie z listy dostępnych
-                // dostepneZadania = dostepneZadania.filter(z => z.id !== aktualnieWybraneZadanie.id);
-                // inicjalizujEkranQuest(); // Odświeży listę i schowa szczegóły
-            } else {
-                informacjaZwrotnaZadaniaUI.textContent = `Błąd: ${wiadomosc || 'Żądanie nie spełnia kryteriów zadania.'}`;
-                informacjaZwrotnaZadaniaUI.className = 'feedback-message error';
-            }
-            // Ponownie włącz przycisk, jeśli zadanie nie zostało np. usunięte z listy
-             wyslijZadanieButton.disabled = false; // Włącz przycisk z powrotem
-             // Możesz też odświeżyć listę wymaganych przedmiotów, bo ekwipunek mógł się zmienić
-             wybierzZadanie(aktualnieWybraneZadanie.id);
-
-
-        }, 1500); // Symulowane opóźnienie
-    });
-
-
-    function walidujZadaniePoStronieSerwera(zadanie, payload, aktualnyEkwipunek) {
-        // To jest kluczowa funkcja, gdzie implementujesz logikę sprawdzania,
-        // czy JSON użytkownika jest poprawny dla KONKRETNEGO zadania.
-        // Sprawdza ona, czy payload zawiera odpowiednie ID przedmiotów, ilości, właściwości,
-        // zgodnie z tym, czego oczekuje zadanie.
-        // To jest walidacja SAMEGO PAYLOADU, a nie tylko tego, czy user MA itemy.
-
-        // Przykład dla zadania "zad001"
-        if (zadanie.id === "zad001") {
-            if (!payload.items_payload || !Array.isArray(payload.items_payload)) {
-                return { sukces: false, wiadomosc: "Payload musi zawierać tablicę 'items_payload'." };
-            }
-
-            let przedmiotyDoZuzycia = [];
-            let spelniaWymogi = true;
-            let wiadomoscBledu = "";
-
-            // Wymagane przedmioty dla zadania, które muszą być w payloadzie
-            const oczekiwanyRdzen = payload.items_payload.find(p => p.item_id === "artifact_พลังงาน_01");
-            const oczekiwanyZwoj = payload.items_payload.find(p => p.item_id === "scroll_ochrony_03");
-
-            const wymaganyRdzenDef = zadanie.wymaganePrzedmioty.find(p => p.idPrzedmiotu === "artifact_พลังงาน_01");
-            const wymaganyZwojDef = zadanie.wymaganePrzedmioty.find(p => p.idPrzedmiotu === "scroll_ochrony_03");
-
-
-            if (!oczekiwanyRdzen || oczekiwanyRdzen.quantity < wymaganyRdzenDef.ilosc) {
-                spelniaWymogi = false;
-                wiadomoscBledu += `Nie wysłano wystarczającej ilości (${wymaganyRdzenDef.ilosc}) Rdzeni Energii w żądaniu. `;
-            } else if (oczekiwanyRdzen.properties.rarity !== "rare" /* TODO: bardziej generyczna walidacja właściwości */) {
-                spelniaWymogi = false;
-                wiadomoscBledu += "Rdzeń Energii musi mieć właściwość rzadkosc: 'rzadki'. ";
-            } else {
-                // Sprawdź, czy user FAKTYCZNIE MA tyle itemów o tych właściwościach, ile deklaruje w JSON
-                const maWystarczajaco = sprawdzPrzedmiotWEkwipunku("artifact_พลังงาน_01", oczekiwanyRdzen.quantity, {rzadkosc: "rzadki"});
-                if (!maWystarczajaco) {
-                    return { sukces: false, wiadomosc: "Deklarujesz wysłanie więcej Rdzeni Energii (rzadkich) niż posiadasz." };
-                }
-                przedmiotyDoZuzycia.push({ idPrzedmiotu: "artifact_พลังงาน_01", ilosc: wymaganyRdzenDef.ilosc });
-            }
-
-            if (!oczekiwanyZwoj || oczekiwanyZwoj.quantity < wymaganyZwojDef.ilosc) {
-                spelniaWymogi = false;
-                wiadomoscBledu += `Nie wysłano wystarczającej ilości (${wymaganyZwojDef.ilosc}) Zwojów Ochrony Większej. `;
-            } else {
-                 const maWystarczajaco = sprawdzPrzedmiotWEkwipunku("scroll_ochrony_03", oczekiwanyZwoj.quantity); // Zakładamy brak specjalnych właściwości dla zwoju w tym teście payloadu
-                if (!maWystarczajaco) {
-                    return { sukces: false, wiadomosc: "Deklarujesz wysłanie więcej Zwojów Ochrony niż posiadasz." };
-                }
-                przedmiotyDoZuzycia.push({ idPrzedmiotu: "scroll_ochrony_03", ilosc: wymaganyZwojDef.ilosc });
-            }
-
-
-            if (spelniaWymogi) {
-                // Dodatkowa walidacja struktury np. destination_zone
-                if (payload.destination_zone !== "Elgore_City_Center") {
-                     return { sukces: false, wiadomosc: "Nieprawidłowa 'destination_zone' w payloadzie." };
-                }
-                return { sukces: true, wiadomosc: "Artefakty dostarczone do Elgore!", zuzytePrzedmioty: przedmiotyDoZuzycia };
-            } else {
-                return { sukces: false, wiadomosc: wiadomoscBledu };
-            }
-        }
-        // TODO: Dodać logikę walidacji dla innych zadań (np. zad002)
-
-        return { sukces: false, wiadomosc: "Nie zaimplementowano logiki walidacji dla tego zadania." };
-    }
 
 
    
@@ -537,7 +559,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // Funkcje obsługi wysyłania Requestów i odbierania Response
+        
+    function getRequestData(tabId) {
+        const method = document.getElementById(`${tabId}-method`).value;
+        const url = document.getElementById(`${tabId}-url`).value;
+        const body = document.getElementById(`${tabId}-body`).value;
+        // Zbierz wszystkie pary key/value dla danego tabId, iterując po rosnących indeksach
+        const queryParams = [];
+        let rowIndex = 0;
+        while (true) {
+            const keyInput = document.getElementById(`${tabId}-query-param-row-${rowIndex}-key`);
+            const valueInput = document.getElementById(`${tabId}-query-param-row-${rowIndex}-value`);
+            if (!keyInput || !valueInput) {
+                break;
+            }
+            // Dodaj tylko jeśli key lub value nie jest puste
+            if (keyInput.value !== '' || valueInput.value !== '') {
+                queryParams.push({
+                    key: keyInput.value,
+                    value: valueInput.value
+                });
+            }
+            rowIndex++;
+        }
+        const requestData = {
+            method,
+            url,
+            body,
+            queryParams
+        };
+        console.log('Zebrane queryParams:', requestData);
+        return { requestData };
+    }
 
+    async function sendHttpRequest(requestData) {
+        // Build query string from queryParams array
+        let url = requestData.url;
+        if (requestData.queryParams && requestData.queryParams.length > 0) {
+            const params = requestData.queryParams
+                .filter(q => q.key !== '')
+                .map(q => encodeURIComponent(q.key) + '=' + encodeURIComponent(q.value))
+                .join('&');
+            if (params) {
+                url += (url.includes('?') ? '&' : '?') + params;
+            }
+        }
+
+        // Prepare headers
+        const headers = {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc3MjQxODB9.UuB7cybi_afvoC4YVLbSi9QMQc40ZWltcNBzukbCJrk'
+        };
+        // Add Content-Type for methods with body
+        if (['POST', 'PUT', 'PATCH'].includes(requestData.method.toUpperCase())) {
+            headers['Content-Type'] = 'application/json';
+        }
+
+        // Prepare fetch options
+        const options = {
+            method: requestData.method,
+            headers: headers
+        };
+        if (requestData.body && ['POST', 'PUT', 'PATCH'].includes(requestData.method.toUpperCase())) {
+            options.body = requestData.body;
+        }
+
+        try {
+            const response = await fetch(url, options);
+            const contentType = response.headers.get('content-type');
+            let data;
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+            }
+            return { status: response.status, data };
+        } catch (error) {
+            return { status: 0, error: error.message };
+        }
+    }
+
+
+    // Delegacja zdarzeń: wykrywa kliknięcie na przycisk "Send Request" i wywołuje getRequestData(tabId)
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id && e.target.id.endsWith('-send-button')) {
+            const tabId = e.target.id.replace('-send-button', '');
+            console.log('Wysłano żądanie dla zakładki:', tabId);
+            const { requestData } = getRequestData(tabId);
+            sendHttpRequest(requestData);
+        }
+    });
     
     // === KONIEC SEKCJI EKRANU QUEST ===
 

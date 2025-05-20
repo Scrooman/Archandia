@@ -36,28 +36,28 @@
                 </div>
 
                 <div class="szczegoly-zadania-panel" style="display: none;">
-                    <h3 id="tytulZadania"></h3>
-                    <p id="opisZadania"></p>
-                    <p><strong>Endpoint:</strong> <code id="startingEndpointInfo"></code></p>
-                    <p><strong>HTTP Method:</strong> <code id="metodaHttpInfo">GET</code></p>
-                    <h4>Requirements:</h4>
+                    <h3 id="tytulZadania" style="margin-bottom: 10px;"></h3>
+                    <p id="opisZadania" style="margin-bottom: 10px;"></p>
+                    <div id="starting-endpoint-container" style="display: flex; flex-direction: column; margin-bottom: 10px;">
+                        <div id="startingEndpointLabel" style="margin-bottom: 2px;"><strong>Endpoint:</strong></div>
+                        <code id="startingEndpointInfo" style="margin-bottom: 10px;"></code>
+                    </div>
+                    <p id="metodaHttpLabel"><strong>HTTP Method:</strong> <code id="metodaHttpInfo" ></code></p>
+                    <h4 style="margin-top: 10px;">Requirements:</h4>
                     <ul id="wymaganePrzedmiotyLista"></ul>
                     <h4>Rewards:</h4>
                     <ul id="rewardList"></ul>
-                    <p><strong>Available till:</strong> <code id="questAvailableTillInfo"></code></p>
+                    <div id="availableTillLabel">
+                        <p><strong>Available till:</strong> <code id="questAvailableTillInfo"></code></p>
+                    </div>
+                    <div id="questsEndsLabel" style="display: none;">
+                        <p><strong>Quest Ends:</strong> <code id="questEndsInfo"></code></p>
+                    </div>
                     <button id="startQuest" class="action-button">Start Quest</button>
+                    <button id="cancelQuest" class="action-button" style="display: none; color: #9c0000">Abandon Quest</button>
                     <div id="tasksContainer"></div>
                     <div id="requestsSequenceContainer"></div>
-
-
-                    <div class="edytor-json-kontener">
-                        <label for="edytorJsonInput">Treść żądania (JSON):</label>
-                        <textarea id="edytorJsonInput" rows="12" placeholder="Wpisz tutaj swoje żądanie w formacie JSON..."></textarea>
-                        <button id="podpowiedzJsonButton" class="utility-button">Pokaż przykład JSON</button>
-                    </div>
-
-                    <button id="wyslijZadanieButton" class="action-button">Wyślij Żądanie</button>
-                    <div id="informacjaZwrotnaZadania" class="feedback-message"></div>
+                    <button id="completeQuest" class="action-button" style="display: none;">Complete Quest</button>
                 </div>
             </div>
         </div>
