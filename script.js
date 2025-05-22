@@ -2,6 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const openChestButton = document.getElementById('openChestButton');
     const chestImage = document.getElementById('chestImage');
     const itemAnimationContainer = document.getElementById('itemAnimationContainer');
+
+    // automatyczne zwiększanie zawartości pola tekstowego
+    document.addEventListener('input', function(e) {
+        if (e.target.tagName === 'TEXTAREA') {
+            e.target.style.height = 'auto';
+            e.target.style.height = (e.target.scrollHeight) + 'px';
+        }
+    });
+
+    function autoResizeTextarea(textarea) {
+    if (!textarea) return;
+    textarea.style.height = 'auto';
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+}
     // const droppedItemImage = document.getElementById('droppedItem'); // If you need to change item src
 
     // Przykładowa struktura danych dla zadań
@@ -187,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <textarea id="${tabId}-body" placeholder='{"key": "value"}'></textarea>
 
             <div class="button-group">
+                <span id="${tabId}-json-msg" class="json-msg" style="display: block;"></span>
                 <button class="action-button" id="${tabId}-send-button">Send Request</button>
             </div>
 
@@ -196,9 +211,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById(`${requestsSectionId}-content`).appendChild(tabContent);
         switchToTab(requestsSectionId, tabId);
-    }
 
-    
+        // funkcja wyświetlania błędów struktury JSON dla Request body
+        const bodyTextarea = tabContent.querySelector(`#${tabId}-body`);
+        const outputField = document.getElementById(`${tabId}-json-msg`);
+        if (bodyTextarea) {
+            bodyTextarea.addEventListener('blur', function () {
+                try {
+                    const raw = bodyTextarea.value.trim();
+                    if (!raw) return; // nie formatuj pustego
+                    const parsed = JSON.parse(raw);
+                    const pretty = JSON.stringify(parsed, null, 2);
+                    bodyTextarea.value = pretty;
+                    outputField.classList.remove('error');
+                    outputField.textContent = "✅ JSON is correct";
+                    autoResizeTextarea(bodyTextarea); 
+                } catch (err) {
+                    outputField.textContent = "❌ JSON error: " + err.message;
+                    bodyTextarea.classList.add('error');
+                }
+            });
+        }
+    }
 
     // Funkcja do dodawania nowej pary Key/Value
     let queryParamRowCounter = 0;
@@ -256,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
         keyValuePairContainer.appendChild(valueRow);
     }
 
-    // Delegacja zdarzeń dla dynamicznych przycisków w kontenerze
+    // Delegacja zdarzeń dla dynamicznych przycisków w kontenerze dla dodawania nowej pary Key/Value
     document.addEventListener('click', function(e) {
         if (e.target && e.target.id === 'addNewQueryParamRow') {
             // Szukamy kontenera z parami w rodzeństwie (poprzedni element względem przycisku)
@@ -296,22 +330,37 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(`${tabId}-content`).classList.add('active-tab-content');
 
         requestsSection.activeTabId = tabId;
+
+        // Usuń zawartość zmiennej przechowywanej pod kluczem w sessionStorage
+        sessionStorage.setItem(`${tabId}-last-successful-request-data`, "");
     }
 
 
     // === Sckrypt dla wyświetlania sekcji Requests Sequence w ekranie Zadania ===
     let methodAndUrlsFieldCounter = 1;
 
-    // Przenieś opcje do zmiennej globalnej/metodowej
-    const sequenceOptions = [
-        { value: "1", label: "GET: get_manual?ItemType=Crossbow&ItemName=Advance Crossbow" },
-        { value: "2", label: "POST: archandia/post_order/golundo?BlacksmithId=2aLyaegQQdS7&ManualId=vN1qOsHVRkq2" }
-        // Dodaj kolejne opcje tutaj
-    ];
+    // Zmienna przechowuje docelowo listę metod i URLi
+    const sequenceOptions = [];
 
     // Funkcja do dodawania nowej opcji do sequenceOptions
-    function dodajOpcjeDoSequenceOptions(value, label) {
-        sequenceOptions.push({ value, label });
+    function insertMethodAndUrlIntoSequenceOptions(method, url) {
+        // method i url mogą być obiektami {method: "...", url: "..."}
+        // lub stringami, więc obsłuż oba przypadki
+        let m, u;
+        if (typeof method === 'object' && method !== null) {
+            m = method.method;
+            u = method.url;
+        } else {
+            m = method;
+            u = url;
+        }
+        // Dodajemy do sequenceOptions jako { value, label }
+        const value = `${m}:${u}`;
+        const label = `${m}: ${u}`;
+        // Unikaj duplikatów
+        if (!sequenceOptions.some(opt => opt.value === value)) {
+            sequenceOptions.push({ value, label });
+        }
     }
 
     // Aktualizuje wszystkie selecty z klasą sequence-select-field na podstawie sequenceOptions
@@ -383,6 +432,9 @@ document.addEventListener('DOMContentLoaded', () => {
         methodAndUrlsFieldCounter++;
 
         document.getElementById(`${sequenceTabId}-content`).appendChild(tabContent);
+        sequenceOptions.length = 0;
+        insertMethodAndUrlIntoSequenceOptions("", "");
+        updateSequenceSelectFields();
 
     }
 
@@ -390,8 +442,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //Funckja do dodawania nowej pary metod i URL
 
     function addMethodAndUrlPair() {
-        dodajOpcjeDoSequenceOptions("3", "PUT: archandia/put_order/golundo?BlacksmithId=2aLyaegQQdS7&ManualId=vN1qOsHVRkq2");
-        updateSequenceSelectFields();
+        //dodajOpcjeDoSequenceOptions("3", "PUT: archandia/put_order/golundo?BlacksmithId=2aLyaegQQdS7&ManualId=vN1qOsHVRkq2");
+        //updateSequenceSelectFields();
 
         const container = document.querySelector('.request-sequence-tab-content');
         if (!container) return;
@@ -420,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
-    // Delegacja zdarzeń dla dynamicznych przycisków w kontenerze
+    // Delegacja zdarzeń dla dynamicznych przycisków w kontenerze dodawania nowej pary metod i URL
     document.addEventListener('click', function(e) {
         if (e.target && e.target.id === 'add-request-tab-button') {
             addMethodAndUrlPair();
@@ -589,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body,
             queryParams
         };
-        console.log('Zebrane queryParams:', requestData);
+        //console.log('Zebrane queryParams:', requestData);
         return { requestData };
     }
 
@@ -608,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepare headers
         const headers = {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc3NjAxMDZ9.pxjNwCkFxLJ2vqy6nTUk88glb9_l-Izw2gkBQa-82ag'
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc4OTUyNjl9.CgWDWnHCj0Uoit8zUpusSJbNck_kCT47cbD45hOs03A'
         };
         // Add Content-Type for methods with body
         if (['POST', 'PUT', 'PATCH'].includes(requestData.method.toUpperCase())) {
@@ -633,6 +685,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 data = await response.text();
             }
+            console.log('Odpowiedź:', data);
             return { status: response.status, data };
         } catch (error) {
             return { status: 0, error: error.message };
@@ -640,16 +693,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    function printResponseInResponseField(tabId, jsonData, requestData) {
+        const responseField = document.getElementById(`${tabId}-response`);
+        if (!responseField) return;
+        try {
+            responseField.value = JSON.stringify(jsonData, null, 2);
+        } catch (e) {
+            responseField.value = String(jsonData);
+        }
+        autoResizeTextarea(responseField); 
+        if (jsonData.status === 200) {
+            handleMethodAndUrlFromSuccessRequest(tabId, jsonData, requestData.method, requestData.url)
+        }
+
+    }
+
+    function handleMethodAndUrlFromSuccessRequest(tabId, jsonData, method, url) {
+        if (jsonData.status === 200) {
+            // Zapisz do sessionStorage pod kluczem związanym z tabId
+            sessionStorage.setItem(
+                `${tabId}-last-successful-request-data`,
+                JSON.stringify({ method, url })
+            );
+            //console.log('Zapisano dane ostatniego udanego żądania:', { method, url });
+            insertMethodAndUrlIntoSequenceOptions(method, url);
+            updateSequenceSelectFields();
+        }
+    }
+
     // Delegacja zdarzeń: wykrywa kliknięcie na przycisk "Send Request" i wywołuje getRequestData(tabId)
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', async function(e) {
         if (e.target && e.target.id && e.target.id.endsWith('-send-button')) {
             const tabId = e.target.id.replace('-send-button', '');
-            console.log('Wysłano żądanie dla zakładki:', tabId);
+            //console.log('Wysłano żądanie dla zakładki:', tabId);
             const { requestData } = getRequestData(tabId);
-            sendHttpRequest(requestData);
+            const response = await sendHttpRequest(requestData);
+            printResponseInResponseField(tabId, response, requestData);
         }
     });
-    
+
     // === KONIEC SEKCJI EKRANU QUEST ===
 
     const menuButtons = document.querySelectorAll('.bottom-menu .menu-button');
