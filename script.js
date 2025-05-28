@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chestImage = document.getElementById('chestImage');
     const itemAnimationContainer = document.getElementById('itemAnimationContainer');
 
+    const menuButtons = document.querySelectorAll('.bottom-menu .menu-button');
+    const screens = document.querySelectorAll('.app-container .screen');
+    const mainContentContainer = document.getElementById('mainContent'); // The open-chest-screen itself
+
     // automatyczne zwiększanie zawartości pola tekstowego
     document.addEventListener('input', function(e) {
         if (e.target.tagName === 'TEXTAREA') {
@@ -12,10 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function autoResizeTextarea(textarea) {
-    if (!textarea) return;
-    textarea.style.height = 'auto';
-    textarea.style.height = (textarea.scrollHeight) + 'px';
-}
+        if (!textarea) return;
+        if (event) event.preventDefault();
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+    }
     // const droppedItemImage = document.getElementById('droppedItem'); // If you need to change item src
 
     // Przykładowa struktura danych dla zadań
@@ -87,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === SEKCJA EKRANU QUEST ===
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc3MTkzMTN9.FZTeEgOPx3wnrmEGLad0jJCZk6el0rCzCksoUPs5iA4";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDgzMjQ3NzZ9.iIk5FnTpeg8q0ljq1RYf7JFvEkJ1y4VKoVZqQHlcLGs";
 
 
     const ekranZdobywaj = document.getElementById('questScreen');
@@ -102,6 +107,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const metodaHttpInfoUI = document.getElementById('metodaHttpInfo');
     const questavailableInfoUI = document.getElementById('questAvailableTillInfo');
     const questEndsAtInfoUI = document.getElementById('questEndsInfo');
+
+
+    // === Pola w ekranie Chests ===
+    const chestNameUI = document.getElementById('chestName');
+    const chestImageUI = document.getElementById('chestImage');
+    const chestRarityUI = document.getElementById('chestRarity');
+    const requiredKeysListUI = document.getElementById('requiredKeysList');
+    const lootListUi = document.getElementById('lootList');
+
 
 
     // === Sckrypt dla wyświetlania sekcji Requests w ekranie Zadania ===
@@ -513,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
         methodAndUrlsFieldCounter = 1; // Resetuj licznik pól metody i URL
         aktualnieWybraneZadanie = dostepneZadania.find(z => z.id === idZadania);
         if (!aktualnieWybraneZadanie) return;
-
+        console.log("Wybrane zadanie:", aktualnieWybraneZadanie);
         // Podświetl wybrane zadanie na liście
         document.querySelectorAll('#listaZadan li').forEach(el => {
             el.classList.remove('aktywne-zadanie');
@@ -548,10 +562,12 @@ document.addEventListener('DOMContentLoaded', () => {
         metodaHttpInfoUI.textContent = aktualnieWybraneZadanie.metodaHttp;
         questavailableInfoUI.textContent = aktualnieWybraneZadanie.questAvailableTill; 
         questEndsAtInfoUI.textContent = aktualnieWybraneZadanie.questEndsAt;
+        
 
         wymaganePrzedmiotyListaUI.innerHTML = '';
         rewardListUi.innerHTML = ''; 
         let czyMoznaPodjacZadanie = true;
+        console.log("Wymagane przedmioty:", aktualnieWybraneZadanie);
         aktualnieWybraneZadanie.wymaganePrzedmioty.forEach(wymPrzedmiot => {
             const li = document.createElement('li');
             const posiadanyPrzedmiot = sprawdzPrzedmiotWEkwipunku(wymPrzedmiot.idPrzedmiotu, wymPrzedmiot.ilosc, wymPrzedmiot.wymaganeWlasciwosci);
@@ -617,14 +633,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const method = document.getElementById(`${tabId}-method`).value;
         const url = document.getElementById(`${tabId}-url`).value;
         const body = document.getElementById(`${tabId}-body`).value;
-        // Zbierz wszystkie pary key/value dla danego tabId, iterując po rosnących indeksach
+        // Zbierz wszystkie pary key/value dla danego tabId, iterując maksymalnie 30 razy
         const queryParams = [];
-        let rowIndex = 0;
-        while (true) {
+        for (let rowIndex = 0; rowIndex < 30; rowIndex++) {
             const keyInput = document.getElementById(`${tabId}-query-param-row-${rowIndex}-key`);
             const valueInput = document.getElementById(`${tabId}-query-param-row-${rowIndex}-value`);
             if (!keyInput || !valueInput) {
-                break;
+                continue; // Przechodzimy dalej, jeśli nie ma któregoś z inputów
             }
             // Dodaj tylko jeśli key lub value nie jest puste
             if (keyInput.value !== '' || valueInput.value !== '') {
@@ -633,7 +648,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     value: valueInput.value
                 });
             }
-            rowIndex++;
         }
         const requestData = {
             method,
@@ -641,7 +655,6 @@ document.addEventListener('DOMContentLoaded', () => {
             body,
             queryParams
         };
-        //console.log('Zebrane queryParams:', requestData);
         return { requestData };
     }
 
@@ -660,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepare headers
         const headers = {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDc4OTUyNjl9.CgWDWnHCj0Uoit8zUpusSJbNck_kCT47cbD45hOs03A'
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyYWN0ZXJJZCI6IjEiLCJleHAiOjE3NDgzMjQ3NzZ9.iIk5FnTpeg8q0ljq1RYf7JFvEkJ1y4VKoVZqQHlcLGs'
         };
         // Add Content-Type for methods with body
         if (['POST', 'PUT', 'PATCH'].includes(requestData.method.toUpperCase())) {
@@ -723,21 +736,181 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Delegacja zdarzeń: wykrywa kliknięcie na przycisk "Send Request" i wywołuje getRequestData(tabId)
     document.addEventListener('click', async function(e) {
+        e.preventDefault();
         if (e.target && e.target.id && e.target.id.endsWith('-send-button')) {
             const tabId = e.target.id.replace('-send-button', '');
-            //console.log('Wysłano żądanie dla zakładki:', tabId);
+            console.log('Wysłano żądanie dla zakładki:', tabId);
             const { requestData } = getRequestData(tabId);
             const response = await sendHttpRequest(requestData);
             printResponseInResponseField(tabId, response, requestData);
         }
     });
 
+
+
+    //testowo taskId jest przechowywany lokalnie, docelowo powinien być zapisywany w momencie otwarcia zadania
+    const taskId = "Rej6VMrPSyrU";
+
+    // testowo requestsSequence jest przechowywane lokalnie, docelowo powinno być zapisywane na podstawie wybranych wartości w selectach w sekcji sequence
+    const requestsSequence = 'GET:http://127.0.0.1:5000/get_manual?ItemType=Crossbow&ItemName=Advance Crossbow';
+
+    /**
+     * Funkcja służąca do weryfikacji spełnienia wymagań ukończenia questa.
+     * @param {string} taskId
+     * @param {Array} requestsSequence
+     * @returns {Promise<object>}
+     */
+    async function sendCompleteQuestRequest(taskId, requestsSequence) {
+        const url = 'http://127.0.0.1:5000/check_requirements';
+        const body = JSON.stringify({ taskId, requestsSequence });
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers,
+                body
+            });
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return await response.json();
+            }
+            return { status: response.status, data: await response.text() };
+        } catch (err) {
+            return { status: 0, error: err.message };
+        }
+    }
+
+    // DOCELOWA FUNCKJA Obsługa kliknięcia przycisku "Complete Quest"
+    document.getElementById('completeQuest').addEventListener('click', async function () {
+
+        const result = await sendCompleteQuestRequest(taskId, requestsSequence);
+        // Możesz wyświetlić wynik w UI, np. alert lub dedykowane pole
+        console.log('Wynik ukończenia zadania:', result);
+    });
+
     // === KONIEC SEKCJI EKRANU QUEST ===
 
-    const menuButtons = document.querySelectorAll('.bottom-menu .menu-button');
-    const screens = document.querySelectorAll('.app-container .screen');
-    const mainContentContainer = document.getElementById('mainContent'); // The open-chest-screen itself
 
+
+    // === SEKCJA EKRANU Otwórz Skrzynię ===
+    const listaChestsUI = document.getElementById('listaChests');
+    const panelSzczegolowChestaUI = document.querySelector('.szczegoly-chesta-panel');
+
+    let dostepneChesty = []; 
+
+    async function wyswietlListeChests() {
+        listaChestsUI.innerHTML = ''; // Wyczyść starą listę
+        const data = await fetchChestsList();
+        console.log('Dostępne skrzynie:', data);
+        dostepneChesty = data || dostepneChesty; // Użyj pobranej listy jeśli istnieje
+
+        // dostepneChesty to tablica z jednym obiektem, gdzie klucze to ID skrzyń
+        if (!Array.isArray(dostepneChesty) || dostepneChesty.length === 0 || typeof dostepneChesty[0] !== 'object') {
+            const elementListy = document.createElement('li');
+            elementListy.textContent = 'No available chests';
+            elementListy.classList.add('no-chests');
+            // Możesz dodać klasę CSS, aby wyróżnić ten element
+            elementListy.style.color = 'red'; 
+            elementListy.style.cursor = 'not-allowed';
+            elementListy.style.pointerEvents = 'none';
+            listaChestsUI.appendChild(elementListy);
+            return;
+        }
+
+        // Jeśli dostepneChesty to tablica obiektów skrzyń (każdy z polem chestId)
+        const chestsArr = Array.isArray(dostepneChesty) ? dostepneChesty : [];
+        const chestIds = chestsArr.map(chest => chest.chestId);
+
+        if (chestIds.length === 0) {
+            const elementListy = document.createElement('li');
+            elementListy.textContent = 'No available chests';
+            listaChestsUI.appendChild(elementListy);
+            return;
+        }
+
+        chestIds.forEach(chestId => {
+            // Find the chest object in chestsArr with the matching chestId
+            const chest = chestsArr.find(chest => chest.chestId === chestId);
+            if (!chest) return;
+            const elementListy = document.createElement('li');
+            elementListy.textContent = chest.name;
+            elementListy.dataset.chestId = chestId;
+            elementListy.addEventListener('click', () => wybierzChest(chestId, data));
+            listaChestsUI.appendChild(elementListy);
+        });
+    }
+
+    async function fetchChestsList() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/get_chests_list');
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+            window.chests_list = data;
+            return data;
+        } catch (err) {
+            console.error('Błąd pobierania listy skrzyń:', err);
+            window.chests_list = {};
+            return {};
+        }
+    }
+
+    let aktualnieWybranyChest = null;
+
+    function wybierzChest(chestId, chestData) {
+        aktualnieWybranyChest = chestData.find(c => String(c.chestId) === String(chestId));
+        if (!aktualnieWybranyChest) return;
+        console.log('Aktualnie wybrany chest:', aktualnieWybranyChest);
+        // Podświetl wybrane zadanie na liście
+        document.querySelectorAll('#listaChests li').forEach(el => {
+            el.classList.remove('aktywny-chest');
+            if (el.dataset.chestId === String(chestId)) {
+                el.classList.add('aktywny-chest');
+
+                const tasksContainer = document.getElementById('tasksContainer'); // usuwa istniejącą sekcję z Request
+                const existingTaskSection = tasksContainer.querySelector('.task-section');
+                if (existingTaskSection) {
+                    tasksContainer.removeChild(existingTaskSection);
+                }
+
+                const requestsSequenceContainer = document.getElementById('requestsSequenceContainer'); // usuwa istniejącą sekcję z Request
+                const existingSequenceSection = requestsSequenceContainer.querySelector('.task-section');
+                if (existingSequenceSection) {
+                    requestsSequenceContainer.removeChild(existingSequenceSection);
+                }
+            }
+        });
+
+
+        chestNameUI.textContent = aktualnieWybranyChest.name;
+        chestImageUI.src = aktualnieWybranyChest.chestImageSource;
+        chestRarityUI.textContent = aktualnieWybranyChest.rarity;
+
+        requiredKeysListUI.innerHTML = '';
+        aktualnieWybranyChest.requiredKeys.forEach(reqKey => {
+            const listItem = document.createElement('li');
+            // Dodaj obrazek przed nazwą klucza
+            if (reqKey.keyImageSource) {
+            const img = document.createElement('img');
+            img.src = reqKey.keyImageSource;
+            img.alt = reqKey.keyName;
+            img.classList.add('requiredKeysImg');
+            listItem.appendChild(img);
+            }
+            listItem.appendChild(document.createTextNode(reqKey.keyName));
+            if (reqKey.requiredProperties) {
+            listItem.appendChild(document.createTextNode(` (${formatujWlasciwosci(reqKey.requiredProperties)})`));
+            }
+            requiredKeysListUI.appendChild(listItem);
+        });
+
+        panelSzczegolowChestaUI.style.display = 'block';
+
+    }
+
+    wyswietlListeChests();
     let isAnimating = false;
 
     // --- Chest Opening Logic ---
