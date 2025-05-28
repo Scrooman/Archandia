@@ -13,15 +13,25 @@
             </header>
 
         <main id="mainContent" class="screen open-chest-screen active-screen">
-            <div class="chest-display-area">
-                <div class="chest-wrapper">
-                    <img src="php4img_item_9177.jpg" alt="Skrzynka" id="chestImage" class="chest-image">
-                    <div class="item-animation-container" id="itemAnimationContainer">
-                        <img src="php4img_item_2824.jpg" alt="Przedmiot" id="droppedItem" class="dropped-item">
+            <div class="lista-chests-panel">
+                <h3>Chests</h3>
+                <ul id="listaChests"></ul>
+            </div>
+            <div class="szczegoly-chesta-panel" style="display: none;">
+                <h3 id="chestName" style="margin-bottom: 10px;"></h3>
+                <p id="chestRarity" style="margin-bottom: 10px;"></p>
+                <h4 style="margin-top: 10px;">Required keys:</h4>
+                <ul id="requiredKeysList"></ul>
+                <div class="chest-display-area">
+                    <div class="chest-wrapper">
+                        <img id="chestImage" alt="Chest" class="chest-image">
+                        <div class="item-animation-container" id="itemAnimationContainer">
+                            <img src="images/items/php4img_item_2824.jpg" alt="Przedmiot" id="droppedItem" class="dropped-item">
+                        </div>
                     </div>
                 </div>
+                <button id="openChestButton" class="action-button">Otwórz</button>
             </div>
-            <button id="openChestButton" class="action-button">Otwórz</button>
         </main>
 
         <div id="mobsScreen" class="screen">
@@ -55,10 +65,10 @@
                         <p><strong>Quest Ends:</strong> <code id="questEndsInfo"></code></p>
                     </div>
                     <button id="startQuest" class="action-button">Start Quest</button>
-                    <button id="cancelQuest" class="action-button" style="display: none; color: #9c0000">Abandon Quest</button>
+                    <button id="cancelQuest" class="action-button" style="display: none; color: #9c0000" type="button">Abandon Quest</button>
                     <div id="tasksContainer"></div>
                     <div id="requestsSequenceContainer"></div>
-                    <button id="completeQuest" class="action-button" style="display: none;">Complete Quest</button>
+                    <button id="completeQuest" class="action-button" style="display: none;" type="button">Complete Quest</button>
                 </div>
             </div>
         </div>
