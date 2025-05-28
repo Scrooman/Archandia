@@ -75,7 +75,11 @@ body {
 
 .screen.active-screen {
     display: flex; /* Show active screen */
+    justify-content: flex-start;
 }
+
+
+/* Style dla ekranu Chest */
 
 .chest-display-area {
     flex-grow: 1;
@@ -155,6 +159,92 @@ body {
         opacity: 0;
         transform: translate(-50%, 100%) scale(0.5); /* Fade out and down */
     }
+}
+
+
+
+
+.lista-chests-panel {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--ui-border-color);
+    border-radius: 5px;
+    background-color: var(--bg-dark-primary);
+    height: 25vh; /* Ogranicz wysokość listy skrzyń */
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    width: 100%;
+}
+
+.lista-chests-panel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.lista-chests-panel h3 {
+    margin-bottom: 10px;
+    color: var(--accent-color);
+}
+
+#listaChests {
+    list-style: none;
+    padding: 0;
+}
+
+#listaChests li {
+    padding: 8px 12px;
+    background-color: var(--ui-element-bg);
+    margin-bottom: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background-color 0.2s, border-left-color 0.2s;
+}
+
+#listaChests li:hover {
+    background-color: var(--ui-element-hover-bg);
+}
+
+#listaChests li.aktywny-chest {
+    background-color: var(--main-button-active-bg);
+    color: var(--main-button-text-color);
+    border-left: 3px solid var(--accent-color);
+    font-weight: bold;
+}
+
+.szczegoly-chesta-panel {
+    padding: 15px;
+    border: 1px solid var(--ui-border-color);
+    border-radius: 5px;
+    background-color: var(--bg-dark-primary);
+    flex-grow: 1; /* Zajmuje pozostałe miejsce */
+    overflow-y: auto; /* Umożliwia przewijanie, jeśli treść jest długa */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    width: 100%;
+}
+
+.szczegoly-chesta-panel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.szczegoly-chesta-panel h3, .szczegoly-chesta-panel h4 {
+    color: var(--accent-color);
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+#requiredKeysList {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.requiredKeysImg {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
 }
 
 
