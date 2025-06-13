@@ -1,0 +1,44 @@
+[
+    {
+        "chestId": 3616,
+        "name": "Gold Treasure Chest",
+        "chestImageSource": "images/items/php4img_item_3616.jpg",
+        "rarity": "Elite",
+		"requiredKeys": [
+			{
+				"keyId": 1838,
+				"keyName": "Gold Key",
+				"keyImageSource": "images/items/php4img_item_1838.jpg",
+				"amount": 1
+			}
+		]
+    },
+    {
+        "chestId": 1550,
+        "name": "Black Archon's Chest",
+        "chestImageSource": "images/items/php4img_item_1550.jpg",
+        "rarity": "Elite",
+		"requiredKeys": [
+			{
+				"keyId": 10148,
+				"keyName": "Broken Key",
+				"keyImageSource": "images/items/php4img_item_10148.jpg",
+				"amount": 1
+			}
+		]
+    },
+	{
+        "chestId": 3617,
+        "name": "Silver Treasure Chest",
+        "chestImageSource": "images/items/php4img_item_3617.jpg",
+        "rarity": "Rare",
+		"requiredKeys": [
+			{
+				"keyId": 1840,
+				"keyName": "Silver Key",
+				"keyImageSource": "images/items/php4img_item_1840.jpg",
+				"amount": 1
+			}
+		]
+    }
+]

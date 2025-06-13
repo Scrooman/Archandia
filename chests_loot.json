@@ -1,0 +1,78 @@
+{
+    "3616": {
+        "lootItemsType": {
+            "weapon": {
+                "two_handed_sword": 100,
+                "two_handed_halberd": 100,
+                "one_handed_sword": 100,
+                "one_handed_axe": 100,
+                "one_handed_blunt": 100,
+                "wand": 100,
+                "staff": 100,
+                "dagger": 100,
+                "rapier": 100,
+                "karon": 100,
+                "xenon": 100,
+                "crossbow": 100,
+                "bow": 100,
+                "chakram": 100,
+                "kataria": 100
+            },
+            "armor": {
+                "chest": 100,
+                "feet": 100,
+                "hands": 100,
+                "head": 100,
+                "legs": 100,
+                "shield": 100
+            },
+            "accessory": {
+                "accessory": 100
+            }
+        },
+        "lootItemRarityTypes": ["elite_item"],
+        "lootMiscTypes": {"elemental_stone": 3, "scroll": 100, "potion": 100},
+        "gold": {
+            "min": 1000,
+            "max": 2000
+        }
+    },
+    "3617": {
+        "lootItemsType": {
+            "weapon": {
+                "two_handed_sword": 100,
+                "two_handed_halberd": 100,
+                "one_handed_sword": 100,
+                "one_handed_axe": 100,
+                "one_handed_blunt": 100,
+                "wand": 100,
+                "staff": 100,
+                "dagger": 100,
+                "rapier": 100,
+                "karon": 100,
+                "xenon": 100,
+                "crossbow": 100,
+                "bow": 100,
+                "chakram": 100,
+                "kataria": 100
+            },
+            "armor": {
+                "chest": 100,
+                "feet": 100,
+                "hands": 100,
+                "head": 100,
+                "legs": 100,
+                "shield": 100
+            },
+            "accessory": {
+                "accessory": 100
+            }
+        },
+        "lootItemRarityTypes": ["rare_item"],
+        "lootMiscTypes": {"elemental_stone": 3, "combination_material": 1, "scroll": 100, "potion": 100},
+        "gold": {
+            "min": 1000,
+            "max": 2000
+        }
+    }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Archandia - Methods and URLs ArchGame</title>
+    <link rel="icon" href="images/Archandia_icon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/login_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            </header>
+        <main id="mainContent" class="screen active-screen">
+<div class="login-modal">
+    <div class="login-modal-content">
+        <div class="login-modal-header">
+            <span class="login-modal-title">Enter your User ID and Password</span>
+        </div>
+        <form class="login-form">
+            <div class="login-form-group">
+                <label for="userId">User ID</label>
+                <input type="text" id="userId" name="userId" autocomplete="username" required>
+            </div>
+            <div class="login-form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+            </div>
+            <div class="login-form-actions">
+                <button type="submit" id="loginBtn">Confirm</button>
+                <button type="button" id="registerBtn">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+        </main>
+    </div>
+
+    <script src="/static/js/login_script.js"></script>
+</body>
+</html>

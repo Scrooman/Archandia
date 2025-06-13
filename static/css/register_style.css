@@ -1,0 +1,135 @@
+:root {
+    --bg-dark-primary: #0d1a26; /* Darkest blue/grey from image for main background */
+    --bg-dark-secondary: #1d2c3d; /* Slightly lighter for content areas */
+    --ui-border-color: #3a506b; /* Border color for UI elements */
+    --ui-element-bg: #2a394d; /* Background for buttons, slightly lighter */
+    --ui-element-hover-bg: #34495e;
+    --ui-element-active-bg: #1f2b3a;
+
+    --main-button-bg: #4a708c; /* A more prominent blue/grey for the main "Otwórz" button */
+    --main-button-hover-bg: #5a86a4;
+    --main-button-active-bg: #3a5f78;
+    --main-button-text-color: #e0f2fe;
+
+    --text-color-light: #c5d9e8; /* Light text color */
+    --text-color-dark: #101820;
+    --accent-color: #66a2cc; /* Accent color for active states or highlights */
+
+    --button-shadow: 0 2px 3px rgba(0,0,0,0.3), inset 0 1px 0px rgba(255,255,255,0.05);
+    --button-active-shadow: 0 1px 1px rgba(0,0,0,0.3), inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Georgia', Arial, sans-serif;
+    background-color: var(--bg-dark-primary);
+    color: var(--text-color-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Prevents accidental scrolling on mobile */
+    cursor: url('/static/images/cursor_m1.png'), auto;
+    font-size: 14px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 450px; /* Common mobile width */
+    height: 100vh; /* Full viewport height */
+    background-color: var(--bg-dark-secondary);
+    border: 2px solid var(--ui-border-color);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Important for fixed menu and screen transitions */
+}
+
+.app-header {
+    padding: 10px;
+    background-color: var(--bg-dark-primary);
+    text-align: center;
+    border-bottom: 1px solid var(--ui-border-color);
+    font-size: 1.1em;
+    color: var(--accent-color);
+    /* position: fixed; Remove if you want it to scroll with content (not ideal here) */
+    width: 100%;
+    z-index: 10;
+}
+
+.screen {
+    flex-grow: 1;
+    padding: 10px;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    width: 100%;
+}
+
+.screen.active-screen {
+    display: flex; /* Show active screen */
+    justify-content: flex-start;
+}
+
+.register-modal {
+    margin: 0 auto;
+    margin-top: 24px;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 6px;
+    width: 420px;
+    box-shadow: 0 0 16px #000;
+    padding: 18px 24px;
+}
+
+.register-form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form-group label {
+    color: #ccc;
+    margin-bottom: 4px;
+    font-size: 1em;
+}
+
+.register-form-group input {
+    background: #18181c;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 3px;
+    font-size: 1em;
+}
+
+.register-form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.register-form-actions button {
+    background: linear-gradient(180deg, #222 0%, #444 100%);
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 3px;
+    padding: 7px 28px;
+    font-size: 1em;
+    cursor: url('/static/images/cursor_m2.png'), auto;
+    transition: background 0.2s;
+}
+
+.register-form-actions button:hover {
+    background: linear-gradient(180deg, #333 0%, #555 100%);
+    cursor: url('/static/images/cursor_m2.png'), auto;
+}

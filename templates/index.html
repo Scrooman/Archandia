@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Archandia - Methods and URLs ArchGame</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/Archandia_icon.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            </header>
+
+        <main id="mainContent" class="screen open-chest-screen active-screen">
+            <div class="lista-chests-panel">
+                <h3>Chests</h3>
+                <ul id="listaChests"></ul>
+            </div>
+            <div class="szczegoly-chesta-panel" style="display: none;">
+                <h3 id="chestName" style="margin-bottom: 10px;"></h3>
+                <p id="chestRarity" style="margin-bottom: 10px;"></p>
+                <h4 style="margin-top: 10px;">Required keys:</h4>
+                <ul id="requiredKeysList"></ul>
+                <div class="chest-display-area">
+                    <div class="chest-wrapper">
+                        <img id="chestImage" alt="Chest" class="chest-image">
+                        <div class="item-animation-container" id="itemAnimationContainer">
+                        </div>
+                    </div>
+                </div>
+                <button id="openChestButton" class="action-button">Otwórz</button>
+            </div>
+        </main>
+
+        <div id="mobsScreen" class="screen">
+            <h2>Mobs</h2>
+            <p>Zawartość ekranu Mobs...</p>
+        </div>
+        <div id="questScreen" class="screen">
+            <div class="questScreen-container">
+                <div class="lista-zadan-panel">
+                    <h3>Quests</h3>
+                    <ul id="listaZadan">
+                        </ul>
+                </div>
+
+                <div class="szczegoly-zadania-panel" style="display: none;">
+                    <h3 id="tytulZadania" style="margin-bottom: 10px;"></h3>
+                    <p id="opisZadania" style="margin-bottom: 10px;"></p>
+                    <div id="starting-endpoint-container" style="display: flex; flex-direction: column; margin-bottom: 10px;">
+                        <div id="startingEndpointLabel" style="margin-bottom: 2px;"><strong>Endpoint:</strong></div>
+                        <code id="startingEndpointInfo" style="margin-bottom: 10px;"></code>
+                    </div>
+                    <p id="metodaHttpLabel"><strong>HTTP Method:</strong> <code id="metodaHttpInfo" ></code></p>
+                    <h4 style="margin-top: 10px;">Requirements:</h4>
+                    <ul id="wymaganePrzedmiotyLista"></ul>
+                    <h4>Rewards:</h4>
+                    <ul id="rewardList"></ul>
+                    <div id="availableTillLabel">
+                        <p><strong>Available till:</strong> <code id="questAvailableTillInfo"></code></p>
+                    </div>
+                    <div id="questsEndsLabel" style="display: none;">
+                        <p><strong>Quest Ends:</strong> <code id="questEndsInfo"></code></p>
+                    </div>
+                    <button id="startQuest" class="action-button">Start Quest</button>
+                    <button id="cancelQuest" class="action-button" style="display: none; color: #9c0000" type="button">Abandon Quest</button>
+                    <div id="tasksContainer"></div>
+                    <div id="requestsSequenceContainer"></div>
+                    <button id="completeQuest" class="action-button" style="display: none;" type="button">Complete Quest</button>
+                </div>
+            </div>
+        </div>
+        <div id="inventoryScreen" class="screen">
+            <div class="inventory-container" >
+
+
+            </div>
+        </div>
+        <div id="opcjeScreen" class="screen">
+            <h2>Opcje</h2>
+            <p>Zawartość ekranu Opcje...</p>
+            <button id="logoutBtn" class="logout-button">Log out</button>
+        </div>
+
+        <nav class="bottom-menu">
+            <button class="menu-button" data-target="questScreen">Quest</button>
+            <button class="menu-button" data-target="mobsScreen">Mobs</button>
+            <button class="menu-button main-menu-button active" data-target="open-chest-screen">Open</button>
+            <button class="menu-button" data-target="inventoryScreen">Inventory</button>
+            <button class="menu-button" data-target="opcjeScreen">Options</button>
+        </nav>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>window.currentCharacterId = "{{ current_user.id }}"</script>
+</body>
+</html>

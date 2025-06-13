@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Archandia - Register</title>
+    <link rel="icon" href="images/Archandia_icon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/register_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header></header>
+        <main id="mainContent" class="screen active-screen">
+            <div class="register-modal">
+                <form class="register-form">
+                    <div class="register-form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" autocomplete="off" required>
+                    </div>
+                    <!-- Tu możesz dodać wybór rasy i klasy -->
+                    <div class="register-form-group">
+                        <label for="login">Login</label>
+                        <input type="text" id="login" name="login" autocomplete="username" required>
+                    </div>
+                    <div class="register-form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" autocomplete="new-password" required>
+                    </div>
+                    <div class="register-form-group">
+                        <label for="repeatPassword">Repeat Password</label>
+                        <input type="password" id="repeatPassword" name="repeatPassword" autocomplete="new-password" required>
+                    </div>
+                    <div class="register-form-actions">
+                        <button type="submit" id="createBtn">Create</button>
+                        <button type="button" id="backBtn">Back</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/static/js/register_script.js"></script>
+    <script>window.currentCharacterId = "{{ current_user.id }}"</script>
+</body>
+</html>

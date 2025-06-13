@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Archandia - Methods and URLs ArchGame</title>
+    <link rel="icon" href="images/Archandia_icon.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/inventory_style.css">
+</head>
+<body>
+    <div id="inventory-tabs-container">
+    </div>
+
+    <div id="inventory-grid-wrapper">
+        <div id="inventory-grid">
+        </div>
+    </div>
+
+    <div id="tooltip" style="display: none;">
+        <strong id="tooltip-name">Nazwa Przedmiotu</strong>
+        <p id="tooltip-item-type-kind">Typ przedmiotu pojawi się tutaj.</p>
+    </div>
+
+    <script src="/static/js/inventory_script.js"></script>
+    <script>window.currentCharacterId = "{{ current_user.id }}"</script>
+</body>
+</html>

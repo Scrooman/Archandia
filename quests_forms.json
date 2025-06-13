@@ -1,0 +1,130 @@
+{
+    "type": {
+        "crafting": [
+            {
+                "questId": "questForms1",
+                "questName": "Crafting [przedmiot] for [miasto]",
+                "questDescription": "Miasto [miasto] w [lokalizacja_geograficzna] potrzebuje [przedmiot]. Zidentyfikuj gdzie można wytworzyć przedmiot oraz u jakiego kowala. Pobierz instrukcję wykonania, zbierz wymagane przedmioty, aby nastepnie zlecić wykonanie przedmiotu.",
+                "questStartingEndpoint": "archlord/quests/crafting/[blacksmithLocalization]/get_manual",
+                "questStartingMethod": "GET",
+                "requiredOrderOfMethodsRequests": ":",
+                "questRewards": {
+                    "normal_item": {
+                        "gold": {
+                            "rewardId": 4802,
+                            "rewardName": "Gold Coin of the Rich",
+                            "min": 100,
+                            "max": 500
+                        },
+                        "experience": {
+                            "rewardName": "Experience",
+                            "min": 50,
+                            "max": 200
+                        },
+                        "keys": {
+                            "rewardName": "Silver Key",
+                            "keyId": 1840,
+                            "min": 3,
+                            "max": 5
+                        }
+                    },
+                    "unique_item": {
+                        "gold": {
+                            "rewardId": 4802,
+                            "rewardName": "Gold Coin of the Rich",
+                            "min": 1000,
+                            "max": 5000
+                        },
+                        "experience": {
+                            "rewardName": "Experience",
+                            "min": 500,
+                            "max": 2000
+                        },
+                        "keys": {
+                            "rewardName": "Gold Key",
+                            "keyId": 1838,
+                            "min": 1,
+                            "max": 3
+                        }
+                    }
+                },
+                "availableTowns": [
+                    {
+                        "townName": "Golundo",
+                        "geographicLocalization": "Grimlore"
+                    },
+                    {
+                        "townName": "Anchorville",
+                        "geographicLocalization": "Limelight"
+                    },
+                    {
+                        "townName": "Norine",
+                        "geographicLocalization": "Bardother"
+                    }
+                ]
+            },
+            {
+                "questId": "questForms2",
+                "questName": "Crafting [przedmiot] for [miasto]",
+                "questDescription": "Miasto [miasto] w [lokalizacja_geograficzna] potrzebuje [przedmiot]. Zidentyfikuj gdzie można wytworzyć przedmiot oraz u jakiego kowala. Pobierz instrukcję wykonania, zbierz wymagane przedmioty, aby nastepnie zlecić wykonanie przedmiotu.",
+                "questStartingEndpoint": "archlord/quests/crafting/[blacksmithLocalization]/get_manual",
+                "questStartingMethod": "GET",
+                "requiredOrderOfMethodsRequests": ":",
+                "questRewards": {
+                    "normal_item": {
+                        "gold": {
+                            "rewardId": 4802,
+                            "rewardName": "Gold Coin of the Rich",
+                            "min": 100,
+                            "max": 500
+                        },
+                        "experience": {
+                            "rewardName": "Experience",
+                            "min": 50,
+                            "max": 200
+                        },
+                        "keys": {
+                            "keyId": 1840,
+                            "rewardName": "Silver Key",
+                            "min": 3,
+                            "max": 5
+                        }
+                    },
+                    "unique_item": {
+                        "gold": {
+                            "rewardId": 4802,
+                            "rewardName": "Gold Coin of the Rich",
+                            "min": 1000,
+                            "max": 5000
+                        },
+                        "experience": {
+                            "rewardName": "Experience",
+                            "min": 500,
+                            "max": 2000
+                        },
+                        "keys": {
+                            "rewardName": "Gold Key",
+                            "keyId": 1838,
+                            "min": 1,
+                            "max": 3
+                        }
+                    }
+                },
+                "availableTowns": [
+                    {
+                        "townName": "Golundo",
+                        "geographicLocalization": "Grimlore"
+                    },
+                    {
+                        "townName": "Anchorville",
+                        "geographicLocalization": "Limelight"
+                    },
+                    {
+                        "townName": "Norine",
+                        "geographicLocalization": "Bardother"
+                    }
+                ]
+            }
+        ]
+    }
+}
