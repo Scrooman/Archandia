@@ -437,7 +437,7 @@ def create_craftable_items_database_table(conn):
             id SERIAL PRIMARY KEY,
             itemId TEXT NOT NULL,
             itemName TEXT NOT NULL,
-            itemTypeKindId INTEGER NOT NULL, # do zmiany na TEXT
+            itemTypeKindId INTEGER NOT NULL,
             itemRarityTypeId TEXT NOT NULL,
             itemCategory TEXT NOT NULL
         )
@@ -553,7 +553,8 @@ def init_db():
         #insert_crafting_requirements_database(conn, 3281, 2118, 1)
         #insert_crafting_requirements_database(conn, 3281, 4802, 5000)
     
-        insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", 1, "normal_item", "Crossbow") # tymczasowo zmieniłem "weapon" na integer (1), trzeba zmienić tę kolumnę na text w craftable_items_database table
+        insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", 1, "normal_item", "Crossbow") 
+        # tymczasowo zmieniłem "weapon" na integer (1), trzeba zmienić tę kolumnę na text w craftable_items_database table
         print("Uzupełniono dane w tabelach PostgreSQL.")
     
     finally:
