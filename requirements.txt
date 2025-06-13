@@ -6,3 +6,4 @@ bcrypt
 PyJWT
 python-dotenv
 gunicorn
+psycopg2
