@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tooltipItemTypeKind = document.getElementById('tooltip-item-type-kind');
     
 
-    const API_BASE = "http://127.0.0.1:5000";
+    const API_BASE = "https://archandia.onrender.com";
 
     // Zmienna globalna na poziomie modułu, dostępna dla wszystkich funkcji
     let characterId = null;
