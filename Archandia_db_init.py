@@ -498,9 +498,34 @@ def create_character_inventory_slots_table(conn):
         except Exception as e:
             print(f"Error: {e}")
 
+def insert_crafting_requirements_database(conn, item_id, requiredtoCraftItemId, item_amount=None):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            INSERT INTO crafting_requirements_database (itemId, itemNeededId, itemAmount)
+            VALUES (%s, %s, %s)
+        """, (item_id, requiredtoCraftItemId, item_amount))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
 
 
-# testowe funkcje uzupełniania DB -------------------------------------------
+def insert_craftable_items_database_table(conn, item_id, item_name, item_type_kind_id, item_rarity_type_id, item_category):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            INSERT INTO craftable_items_database (itemId, itemName, itemTypeKindId, itemRarityTypeId, itemCategory)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (item_id, item_name, item_type_kind_id, item_rarity_type_id, item_category))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
 
 
 def init_db():
@@ -520,6 +545,17 @@ def init_db():
         create_crafting_requirements_database_table(conn)
         create_character_inventory_slots_table(conn)
         print("Wszystkie tabele utworzone w PostgreSQL.")
+
+        insert_crafting_requirements_database(conn, 3281, 3281, 1)
+        insert_crafting_requirements_database(conn, 3281, 266, 1)
+        insert_crafting_requirements_database(conn, 3281, 262, 1)
+        insert_crafting_requirements_database(conn, 3281, 258, 1)
+        insert_crafting_requirements_database(conn, 3281, 2118, 1)
+        insert_crafting_requirements_database(conn, 3281, 4802, 5000)
+    
+        insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", "weapon", "normal_item", "Crossbow")
+        print("Uzupełniono dane w tabelach PostgreSQL.")
+    
     finally:
         if conn:
             conn.close()
