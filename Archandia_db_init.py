@@ -235,7 +235,7 @@ def create_requirements_table(conn):
             minimumItemAmountRequired INTEGER NOT NULL,
             itemRarityGiven TEXT,
             itemAmountGiven INTEGER,
-            areRequirementsMet BOOLEAN NOT NULL DEFAULT 0,
+            areRequirementsMet BOOLEAN NOT NULL DEFAULT FALSE,
             updateDateTime TEXT NOT NULL DEFAULT NOW(),
             updateUserTypeId INTEGER NOT NULL DEFAULT 1,
             insertDateTime TEXT NOT NULL DEFAULT NOW(),
