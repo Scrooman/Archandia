@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE = "http://127.0.0.1:5000";
+    const API_BASE = "https://archandia.onrender.com";
 
 
     const openChestButton = document.getElementById('openChestButton');
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchCharacterTasks(characterId) {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/character/${characterId}/tasks`);
+            const response = await fetch(`${API_BASE}/api/character/${characterId}/tasks`);
             if (!response.ok) {
                 // Wyświetl komunikat o błędzie na wzór "No available chests"
                 const listaZadanUI = document.getElementById('listaZadan');
