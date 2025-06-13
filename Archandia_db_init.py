@@ -98,7 +98,7 @@ def create_characters_table(conn):
         cursor.execute(create_table_query)
         conn.commit()
 
-        print("Table 'character' created successfully.")
+        print("Table 'characters' created successfully.")
 
     except Exception as e:
         print(f"Error: {e}")
@@ -133,7 +133,7 @@ def create_tasks_table(conn):
             taskDescription TEXT,
             questStartingMethod TEXT,
             questStartingEndpoint TEXT,
-            isRewardGiven BOOLEAN NOT NULL DEFAULT 0,
+            isRewardGiven BOOLEAN NOT NULL DEFAULT FALSE,
             updateDateTime TEXT NOT NULL DEFAULT NOW(),
             updateUserTypeId INTEGER DEFAULT 1,
             insertDateTime TEXT NOT NULL DEFAULT NOW(),
@@ -408,7 +408,7 @@ def create_items_table(conn):
             name TEXT,
             imageSource TEXT,
             characterId TEXT NOT NULL,
-            stack INTEGER NULLABLE,
+            stack INTEGER,
             updateDateTime TEXT NOT NULL DEFAULT NOW(),
             updateUserTypeId INTEGER NOT NULL DEFAULT 1,
             insertDateTime TEXT NOT NULL DEFAULT NOW(),
