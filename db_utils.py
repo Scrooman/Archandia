@@ -84,7 +84,7 @@ def get_task_data_from_db(character_id, task_status=None):
             status_list = list(task_status)
 
         placeholders = ','.join('%s' for _ in status_list)
-        query = f"SELECT * FROM tasks WHERE characterId = %s AND taskStatus IN ({placeholders}) AND taskAvailableToDateTime > datetime('now')"
+        query = f"SELECT * FROM tasks WHERE characterId = %s AND taskStatus IN ({placeholders}) AND taskAvailableToDateTime > NOW()"
         cursor.execute(query, (character_id, *status_list))
         rows = cursor.fetchall()
         tasks = []
@@ -159,7 +159,7 @@ def update_task_status_in_db(task_id, new_status):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("UPDATE tasks SET taskStatus = %s, updateDatetime = datetime('now', 'localtime') WHERE id = %s", (new_status, task_id))
+        cursor.execute("UPDATE tasks SET taskStatus = %s, updateDatetime = NOW() WHERE id = %s", (new_status, task_id))
         conn.commit()
         print("Task status updated successfully.")
     except sqlite3.Error as e:
@@ -183,7 +183,7 @@ def update_task_start_and_active_time_in_db(task_id, task_start_time, task_activ
             if task_available_to_datetime < task_active_to_time:
                 task_active_to_time = task_available_to_datetime
         cursor.execute(
-            "UPDATE tasks SET taskStartDateTime = %s, taskActiveToDateTime = %s, updateDatetime = datetime('now', 'localtime') WHERE id = %s",
+            "UPDATE tasks SET taskStartDateTime = %s, taskActiveToDateTime = %s, updateDatetime = NOW() WHERE id = %s",
             (task_start_time, task_active_to_time, task_id)
         )
         conn.commit()
@@ -201,7 +201,7 @@ def update_task_active_time_in_db(task_id, task_active_to_time):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            "UPDATE tasks SET taskActiveToDateTime = %s, updateDatetime = datetime('now', 'localtime') WHERE id = %s",
+            "UPDATE tasks SET taskActiveToDateTime = %s, updateDatetime = NOW() WHERE id = %s",
             (task_active_to_time, task_id)
         )
         conn.commit()
