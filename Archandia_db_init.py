@@ -423,6 +423,20 @@ def create_items_table(conn):
     except Exception as e:
         print(f"Error: {e}")
 
+def drop_craftable_items_database_table(conn):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            DROP TABLE IF EXISTS craftable_items_database;
+        """)
+        conn.commit()
+        print("Tabela craftable_items_database została usunięta (jeśli istniała).")
+    except Exception as e:
+        conn.rollback()
+        print(f"Błąd podczas usuwania tabeli: {e}")
+    finally:
+        cursor.close()
+
 
 def create_craftable_items_database_table(conn):
     """
@@ -437,7 +451,7 @@ def create_craftable_items_database_table(conn):
             id SERIAL PRIMARY KEY,
             itemId TEXT NOT NULL,
             itemName TEXT NOT NULL,
-            itemTypeKindId INTEGER NOT NULL,
+            itemTypeKindId TEXT NOT NULL,
             itemRarityTypeId TEXT NOT NULL,
             itemCategory TEXT NOT NULL
         )
@@ -541,6 +555,7 @@ def init_db():
         create_rewards_table(conn)
         create_items_database_table(conn)
         create_items_table(conn)
+        drop_craftable_items_database_table(conn)
         create_craftable_items_database_table(conn)
         create_crafting_requirements_database_table(conn)
         create_character_inventory_slots_table(conn)
@@ -553,8 +568,7 @@ def init_db():
         #insert_crafting_requirements_database(conn, 3281, 2118, 1)
         #insert_crafting_requirements_database(conn, 3281, 4802, 5000)
     
-        insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", 1, "normal_item", "Crossbow") 
-        # tymczasowo zmieniłem "weapon" na integer (1), trzeba zmienić tę kolumnę na text w craftable_items_database table
+        insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", "weapon", "normal_item", "Crossbow") 
         print("Uzupełniono dane w tabelach PostgreSQL.")
     
     finally:
