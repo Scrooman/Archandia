@@ -239,14 +239,14 @@ def register():
         try:
             cursor.execute("""
             INSERT INTO users (login, characterId, password, updateDatetime, updateUserTypeId, insertDateTime, insertUserTypeId)
-            VALUES (%s, %s, %s, datetime('now', 'localtime'), 1, datetime('now', 'localtime'), 1)
+            VALUES (%s, %s, %s, , 1, , 1)
             """, (login,
                 new_character_id,
                 hashed_pw,
             ))
             cursor.execute("""
             INSERT INTO characters (id, name, race, class, lvl, currentExperiencePoints, requiredExperiencePoints, gold, stateId, operationId, localizationId, activeSpawnId, updateDateTime, updateUserTypeId, insertDateTime, insertUserTypeId)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, datetime('now', 'localtime'), 1, datetime('now', 'localtime'), 1)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, , 1, , 1)
             """, (new_character_id,
                 name,
                 "Human",
@@ -262,9 +262,11 @@ def register():
             ))
 
             conn.commit()
-        except sqlite3.IntegrityError:
+        except IntegrityError:
+            conn.rollback()
             return jsonify({"error": "User already exists"}), 409
         finally:
+            cursor.close()
             conn.close()
 
         return jsonify({"message": "User registered successfully", "characterId": new_character_id}), 201
@@ -545,7 +547,7 @@ def update_order_id_in_db(task_id, order_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("UPDATE tasks SET orderId = %s, updateDatetime = datetime('now', 'localtime') WHERE id = %s", (order_id, task_id))
+        cursor.execute("UPDATE tasks SET orderId = %s, updateDatetime =  WHERE id = %s", (order_id, task_id))
         conn.commit()
         print("Order ID updated successfully.")
     except sqlite3.Error as e:
@@ -560,7 +562,7 @@ def update_recipe_corelation_id_in_db(manual_id, recipe_corelation_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("UPDATE manuals SET recipeCorelationId = %s, updateDatetime = datetime('now', 'localtime') WHERE id = %s", (recipe_corelation_id, manual_id))
+        cursor.execute("UPDATE manuals SET recipeCorelationId = %s, updateDatetime =  WHERE id = %s", (recipe_corelation_id, manual_id))
         conn.commit()
         print("Recipe corelation ID updated successfully.")
     except sqlite3.Error as e:
