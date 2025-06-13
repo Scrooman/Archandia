@@ -239,14 +239,14 @@ def register():
         try:
             cursor.execute("""
             INSERT INTO users (login, characterId, password, updateDatetime, updateUserTypeId, insertDateTime, insertUserTypeId)
-            VALUES (%s, %s, %s, , 1, , 1)
+            VALUES (%s, %s, %s, NOW(), 1, NOW(), 1)
             """, (login,
                 new_character_id,
                 hashed_pw,
             ))
             cursor.execute("""
             INSERT INTO characters (id, name, race, class, lvl, currentExperiencePoints, requiredExperiencePoints, gold, stateId, operationId, localizationId, activeSpawnId, updateDateTime, updateUserTypeId, insertDateTime, insertUserTypeId)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, , 1, , 1)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), 1, NOW(), 1)
             """, (new_character_id,
                 name,
                 "Human",
