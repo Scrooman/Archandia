@@ -234,10 +234,6 @@ def insert_task_data_to_db(task_data, task_type, character_id):
             #print(f"Processing rewards for rarity {rarity}: {rewards}")
             for reward_key, reward_value in rewards.items():
                 if isinstance(reward_value, dict):
-                    # Jeśli wartość to słownik (np. keys), rozbij na podklucze
-                    #print(f"Processing reward item: {reward_value}")
-                    # Załóżmy, że reward_value ma postać {'Silver Key': 1840, 'amount': 3}
-                    # Chcemy: rewardName = "Silver Key", rewardItemId = 1840, rewardItemAmount = 3
                     for name, item_id in reward_value.items():
                         if name != "amount":
                             reward_name = name
@@ -389,7 +385,7 @@ def create_requirements_for_manual_in_db(manual_id, item_id):
             req.get("itemAmount"),
             None,  # itemRarityGiven
             None,  # itemAmountGiven
-            0      # areRequirementsMet
+            False      # areRequirementsMet
         ))
 
     conn = get_db_connection()
