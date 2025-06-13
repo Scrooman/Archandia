@@ -262,7 +262,7 @@ def register():
             ))
 
             conn.commit()
-        except IntegrityError:
+        except InterruptedError:
             conn.rollback()
             return jsonify({"error": "User already exists"}), 409
         finally:
