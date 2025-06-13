@@ -1,7 +1,7 @@
 import jwt # type: ignore
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime, timedelta
-import sqlite3
+from psycopg2 import extras
 import psycopg2
 import bcrypt # type: ignore
 import uuid
