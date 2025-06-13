@@ -42,8 +42,6 @@ def create_users_table(conn):
     Function to create the 'users' table in the database.
     """
     try:
-        # Connect to the database
-        conn = sqlite3.connect(conn)
         cursor = conn.cursor()
 
         # SQL query to create the 'users' table
@@ -100,7 +98,7 @@ def create_characters_table(conn):
         cursor.execute(create_table_query)
         conn.commit()
 
-        print("Table 'character_data' created successfully.")
+        print("Table 'character' created successfully.")
 
     except Exception as e:
         print(f"Error: {e}")
@@ -280,27 +278,17 @@ def create_methods_table(conn):
 
 
 def insert_methods(conn):
-    """
-    Function to insert methods into the 'methods' table.
-    """
     try:
-        
         cursor = conn.cursor()
-
-        # Sample methods to insert
         methods = [
-            ("login"),
-            ("get_manual"),
-            ("post_order"),
-            ("post_item")
+            ("login",),
+            ("get_manual",),
+            ("post_order",),
+            ("post_item",)
         ]
-
-        # Insert methods into the table
-        cursor.executemany("INSERT INTO methods (methodName) VALUES (%s)", [(method,) for method in methods])
-        
+        cursor.executemany("INSERT INTO methods (methodName) VALUES (%s)", methods)
         conn.commit()
         print("Methods inserted successfully.")
-
     except Exception as e:
         print(f"Error: {e}")
 
