@@ -705,6 +705,26 @@ def init_db():
     cursor = conn.cursor()
 
 
+    create_crafting_requirements_database_table(DATABASE_URL)
+    create_craftable_items_database_table(DATABASE_URL)
+
+    create_users_table(DATABASE_URL)
+    create_characters_table(DATABASE_URL)
+
+    create_tasks_table(DATABASE_URL)
+    create_manuals_table(DATABASE_URL)
+    create_blacksmiths_table(DATABASE_URL)
+    create_requirements_table(DATABASE_URL)
+
+    create_methods_table(DATABASE_URL)
+    insert_methods(DATABASE_URL)
+    create_rewards_table(DATABASE_URL)
+
+
+    create_items_database_table(DATABASE_URL)
+    create_items_table(DATABASE_URL)
+
+
     # Tabela slotów ekwipunku
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS character_inventory_slots (
@@ -726,24 +746,7 @@ def init_db():
 
 
     #insert_methods(DATABASE_URL)
-    create_crafting_requirements_database_table(DATABASE_URL)
-    create_craftable_items_database_table(DATABASE_URL)
 
-    create_users_table(DATABASE_URL)
-    create_characters_table(DATABASE_URL)
-
-    create_tasks_table(DATABASE_URL)
-    create_manuals_table(DATABASE_URL)
-    create_blacksmiths_table(DATABASE_URL)
-    create_requirements_table(DATABASE_URL)
-
-    create_methods_table(DATABASE_URL)
-    insert_methods(DATABASE_URL)
-    create_rewards_table(DATABASE_URL)
-
-
-    create_items_database_table(DATABASE_URL)
-    create_items_table(DATABASE_URL)
 
 
 
