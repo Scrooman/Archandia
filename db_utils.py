@@ -224,7 +224,7 @@ def insert_task_data_to_db(task_data, task_type, character_id):
     try:
         cursor.execute(""" 
             INSERT INTO tasks (id, characterId, taskType, taskStatus, orderId, taskAvailableToDateTime, requiredOrderOfMethodsRequests, taskName, taskDescription, questStartingMethod, questStartingEndpoint)
-            VALUES (%s, %s, %s, "Not Started", %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, 'Not Started', %s, %s, %s, %s, %s, %s, %s)
         """, (task_id, character_id, task_type, order_id, task_available_to_date_time, task_data.get("requiredOrderOfMethodsRequests", "2;3;4;5"), task_data.get("questName", "Quest Name"), task_data.get("questDescription", "Quest Description"), task_data.get("questStartingMethod", "Missing Method"), task_data.get("questStartingEndpoint", "Missing Endpoint")))
         conn.commit()
 
