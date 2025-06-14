@@ -502,7 +502,7 @@ def create_character_inventory_slots_table(conn):
                 item_id TEXT NOT NULL UNIQUE,
                 PRIMARY KEY (character_id, tab_id, slot_index),
                 FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE,
-                FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
+                FOREIGN KEY (item_id) REFERENCES items(itemId) ON DELETE CASCADE,
                 CHECK (tab_id >= 0 AND tab_id <= 4),
                 CHECK (slot_index >= 0 AND slot_index <= 24)
             )"""
