@@ -25,7 +25,7 @@ def generate_item_id():
     try:
         while True:
             new_item_id = generate_base64_uuid()
-            cursor.execute("SELECT 1 FROM items WHERE id = %s", (new_item_id,))
+            cursor.execute("SELECT 1 FROM items WHERE itemId = %s", (new_item_id,))
             row = cursor.fetchone()
             if not row:  # Jeśli UUID nie istnieje, zwracamy go
                 return new_item_id
