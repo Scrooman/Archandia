@@ -539,6 +539,7 @@ def insert_craftable_items_database_table(conn, item_id, item_name, item_type_ki
         conn.rollback()
         print(f"Error: {e}")
     finally:
+        print("Dane w tabeli craftable_items_database zostały uzupełnione.")
         cursor.close()
 
 
@@ -555,7 +556,6 @@ def init_db():
         create_rewards_table(conn)
         create_items_database_table(conn)
         create_items_table(conn)
-        drop_craftable_items_database_table(conn)
         create_craftable_items_database_table(conn)
         create_crafting_requirements_database_table(conn)
         create_character_inventory_slots_table(conn)
