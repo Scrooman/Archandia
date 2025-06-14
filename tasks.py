@@ -188,7 +188,7 @@ def check_requirements():
             conn = get_db_connection()
             cursor = conn.cursor()
             try:
-                cursor.execute("UPDATE tasks SET taskStatus = 'Completed', taskActiveToDateTime = datetime('now', 'localtime'), taskCompletionDateTime = datetime('now', 'localtime'), isRewardGiven = 1, updateDatetime = datetime('now', 'localtime') WHERE id = %s", (task_id,))
+                cursor.execute("UPDATE tasks SET taskStatus = 'Completed', taskActiveToDateTime = NOW(), taskCompletionDateTime = NOW(), isRewardGiven = 1, updateDatetime = NOW() WHERE id = %s", (task_id,))
                 conn.commit()
                 print("Task status updated successfully.")
             except sqlite3.Error as e:
