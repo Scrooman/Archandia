@@ -403,7 +403,7 @@ def create_items_table(conn):
         CREATE TABLE IF NOT EXISTS items (
             id SERIAL PRIMARY KEY,
             archlordItemId INTEGER NOT NULL,
-            itemId TEXT,
+            itemId TEXT UNIQUE NOT NULL,
             itemTypeKind TEXT,
             name TEXT,
             imageSource TEXT,
