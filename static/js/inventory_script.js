@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createItemElement(itemData) {
         const item = document.createElement('img');
         item.id = `item-${itemData.item_id}`;
-        item.src = "/static/" + (itemData.imageSource || 'images/default.jpg');
+        item.src = "/static/" + (itemData.imagesource || 'images/default.jpg');
         item.alt = itemData.name;
         item.classList.add('inventory-item');
         item.draggable = true;
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Przechowywanie danych na elemencie
         item.dataset.itemId = itemData.item_id;
         item.dataset.itemName = itemData.name;
-        item.dataset.itemTypeKind = itemData.itemTypeKind || 'Brak opisu.';
+        item.dataset.itemTypeKind = itemData.itemtypekind || 'Brak opisu.';
         item.dataset.originalTabId = itemData.tab_id;
         item.dataset.originalSlotIndex = itemData.slot_index;
         item.dataset.stack = itemData.stack || null;

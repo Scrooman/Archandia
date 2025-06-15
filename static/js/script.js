@@ -1103,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     lootImages.push(`<img src="/static/${src}" alt="Loot" class="dropped-item">`);
                 });
             } else if (lootData.lootIdImageSource) {
-                lootImages.push(`<img src="/static/${lootData.lootIdImageSource}" alt="Loot" class="dropped-item">`);
+                lootImages.push(`<img src="${lootData.lootIdImageSource}" alt="Loot" class="dropped-item">`);
             }
         }
 

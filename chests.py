@@ -81,7 +81,7 @@ def open_chest():
     drawn_items_images_source = []
     for item_id in drawn_items_ids:
         if item_id is not None:
-            drawn_items_images_source.append(f"images/items/php4img_item_{item_id}.jpg")
+            drawn_items_images_source.append(f"/static/images/items/php4img_item_{item_id}.jpg")
         else:
             drawn_items_images_source.append(None)
     return jsonify({"lootId": drawn_items_ids,
