@@ -549,12 +549,12 @@ def init_db():
         create_character_inventory_slots_table(conn)
         print("Wszystkie tabele utworzone w PostgreSQL.")
 
-        #insert_crafting_requirements_database(conn, 3281, 3281, 1)
-        #insert_crafting_requirements_database(conn, 3281, 266, 1)
-        #insert_crafting_requirements_database(conn, 3281, 262, 1)
-        #insert_crafting_requirements_database(conn, 3281, 258, 1)
-        #insert_crafting_requirements_database(conn, 3281, 2118, 1)
-        #insert_crafting_requirements_database(conn, 3281, 4802, 5000)
+        insert_crafting_requirements_database(conn, 3281, 3281, 1)
+        insert_crafting_requirements_database(conn, 3281, 266, 1)
+        insert_crafting_requirements_database(conn, 3281, 262, 1)
+        insert_crafting_requirements_database(conn, 3281, 258, 1)
+        insert_crafting_requirements_database(conn, 3281, 2118, 1)
+        insert_crafting_requirements_database(conn, 3281, 4802, 5000)
     
         insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", "weapon", "normal_item", "Crossbow") 
         print("Uzupełniono dane w tabelach PostgreSQL.")
