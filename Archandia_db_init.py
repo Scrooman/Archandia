@@ -47,12 +47,12 @@ def create_users_table(conn):
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             login TEXT NOT NULL UNIQUE,
-            "characterId" TEXT NOT NULL UNIQUE,
+            characterId TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER DEFAULT 1
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -80,17 +80,17 @@ def create_characters_table(conn):
             race TEXT,
             class TEXT,
             lvl INTEGER,
-            "currentExperiencePoints" INTEGER,
-            "requiredExperiencePoints" INTEGER,
+            currentExperiencePoints INTEGER,
+            requiredExperiencePoints INTEGER,
             gold INTEGER,
-            "stateId" INTEGER,
-            "operationId" INTEGER,
-            "localizationId" INTEGER,
-            "activeSpawnId" INTEGER,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER DEFAULT 1
+            stateId INTEGER,
+            operationId INTEGER,
+            localizationId INTEGER,
+            activeSpawnId INTEGER,
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -118,24 +118,24 @@ def create_tasks_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS tasks (
             id TEXT PRIMARY KEY,
-            "characterId" TEXT,
-            "taskType" TEXT,
-            "taskStatus" TEXT,
-            "orderId" TEXT,
-            "taskAvailableToDateTime" TIMESTAMP NOT NULL,
-            "taskStartDateTime" TIMESTAMP,
-            "taskActiveToDateTime" TIMESTAMP,
-            "taskCompletionDateTime" TIMESTAMP,
-            "requiredOrderOfMethodsRequests" TEXT,
-            "taskName" TEXT,
-            "taskDescription" TEXT,
-            "questStartingMethod" TEXT,
-            "questStartingEndpoint" TEXT,
-            "isRewardGiven" BOOLEAN NOT NULL DEFAULT FALSE,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER DEFAULT 1
+            characterId TEXT,
+            taskType TEXT,
+            taskStatus TEXT,
+            orderId TEXT,
+            taskAvailableToDateTime TIMESTAMP NOT NULL,
+            taskStartDateTime TIMESTAMP,
+            taskActiveToDateTime TIMESTAMP,
+            taskCompletionDateTime TIMESTAMP,
+            requiredOrderOfMethodsRequests TEXT,
+            taskName TEXT,
+            taskDescription TEXT,
+            questStartingMethod TEXT,
+            questStartingEndpoint TEXT,
+            isRewardGiven BOOLEAN NOT NULL DEFAULT FALSE,
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -160,18 +160,18 @@ def create_manuals_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS manuals (
             id TEXT PRIMARY KEY,
-            "taskId" TEXT NOT NULL,
-            "recipeCorelationId" TEXT,
+            taskId TEXT NOT NULL,
+            recipeCorelationId TEXT,
             status TEXT NOT NULL,
-            "itemRarity" TEXT,
-            "itemName" TEXT,
-            "itemType" TEXT,
-            "itemCategory" TEXT,
-            "activeToDateTime" TIMESTAMP,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+            itemRarity TEXT,
+            itemName TEXT,
+            itemType TEXT,
+            itemCategory TEXT,
+            activeToDateTime TIMESTAMP,
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER NOT NULL DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER NOT NULL DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -196,12 +196,12 @@ def create_blacksmiths_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS blacksmiths (
             id TEXT PRIMARY KEY,
-            "manualId" TEXT NOT NULL,
-            "blacksmithLocalization" TEXT NOT NULL,        
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+            manualId TEXT NOT NULL,
+            blacksmithLocalization TEXT NOT NULL,        
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER NOT NULL DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER NOT NULL DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -225,19 +225,19 @@ def create_requirements_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS requirements (
             id SERIAL PRIMARY KEY,
-            "manualId" TEXT NOT NULL,
-            "itemIdRequired" TEXT NOT NULL,
-            "itemNameRequired" TEXT NOT NULL,
-            "minimumItemRarityRequired" TEXT,
-            "itemTypeRequired" TEXT NOT NULL,
-            "minimumItemAmountRequired" INTEGER NOT NULL,
-            "itemRarityGiven" TEXT,
-            "itemAmountGiven" INTEGER,
-            "areRequirementsMet" BOOLEAN NOT NULL DEFAULT FALSE,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+            manualId TEXT NOT NULL,
+            itemIdRequired TEXT NOT NULL,
+            itemNameRequired TEXT NOT NULL,
+            minimumItemRarityRequired TEXT,
+            itemTypeRequired TEXT NOT NULL,
+            minimumItemAmountRequired INTEGER NOT NULL,
+            itemRarityGiven TEXT,
+            itemAmountGiven INTEGER,
+            areRequirementsMet BOOLEAN NOT NULL DEFAULT FALSE,
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER NOT NULL DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER NOT NULL DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -262,7 +262,7 @@ def create_methods_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS methods (
             id SERIAL PRIMARY KEY,
-            "methodName" TEXT NOT NULL
+            methodName TEXT NOT NULL
         )
         """
         cursor.execute(create_table_query)
@@ -302,12 +302,10 @@ def create_rewards_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS rewards (
             id SERIAL PRIMARY KEY,
-            "taskId" TEXT NOT NULL,
-            "rewardItemId" TEXT NOT NULL,
-            "rewardName" TEXT NOT NULL,
-            "rewardItemAmount" INTEGER NOT NULL,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW()
+            taskId TEXT NOT NULL,
+            rewardItemId TEXT NOT NULL,
+            rewardName TEXT NOT NULL,
+            rewardItemAmount INTEGER NOT NULL
         )
         """
         cursor.execute(create_table_query)
@@ -330,55 +328,55 @@ def create_items_database_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS items_database (
             id SERIAL PRIMARY KEY,
-            "itemId" INTEGER,
-            "itemTypeKindId" INTEGER,
+            itemId INTEGER,
+            itemTypeKindId INTEGER,
             name VARCHAR(255),
-            "imageLink" TEXT,
-            "image_source" TEXT,
-            "itemRarityTypeId" VARCHAR(255),
-            "colorId" INTEGER,
+            imageLink TEXT,
+            image_source TEXT,
+            itemRarityTypeId VARCHAR(255),
+            colorId INTEGER,
             bound INTEGER,
-            "chantraBagItem" INTEGER,
-            "EventItem" INTEGER,
-            "questLink" TEXT,
-            "questName" VARCHAR(255),
+            chantraBagItem INTEGER,
+            EventItem INTEGER,
+            questLink TEXT,
+            questName VARCHAR(255),
             "class" VARCHAR(255),
             durability INTEGER,
-            "fortuneGate" VARCHAR(255),
-            "requiredLvl" INTEGER,
+            fortuneGate VARCHAR(255),
+            requiredLvl INTEGER,
             additional_stats TEXT,
             description TEXT,
             skills TEXT,
-            "itemTypeId" INTEGER,
-            "weaponTypeId" INTEGER,
-            "armorTypeId" INTEGER,
-            "armorRaceTypeId" INTEGER,
-            "accessoryTypeId" INTEGER,
-            "potionTypeId" INTEGER,
-            "prayerStoneTypeId" INTEGER,
-            "elementalStoneTypeId" INTEGER,
-            "productionMaterialTypeId" INTEGER,
-            "heroicSetTypeId" INTEGER,
+            itemTypeId INTEGER,
+            weaponTypeId INTEGER,
+            armorTypeId INTEGER,
+            armorRaceTypeId INTEGER,
+            accessoryTypeId INTEGER,
+            potionTypeId INTEGER,
+            prayerStoneTypeId INTEGER,
+            elementalStoneTypeId INTEGER,
+            productionMaterialTypeId INTEGER,
+            heroicSetTypeId INTEGER,
             stack INTEGER,
-            "physicalDefense" INTEGER,
-            "physicalDefenceRate" INTEGER,
-            "waterDefence" INTEGER,
-            "airDefence" INTEGER,
-            "magicDefence" INTEGER,
-            "fireDefence" INTEGER,
-            "earthDefence" INTEGER,
-            "heroicDefence" INTEGER,
-            "blockRate" INTEGER,
-            "physicalAttackRate" INTEGER,
-            "attackSpeed" INTEGER,
-            "attackRange" INTEGER,
-            "minDamage" INTEGER,
-            "maxDamage" INTEGER,
-            "randomAbilitiesNumber" INTEGER,
-            "bonusHp" INTEGER,
-            "hpRecovered" INTEGER,
-            "manaRecovered" INTEGER,
-            "mountRunBuff" INTEGER
+            physicalDefense INTEGER,
+            physicalDefenceRate INTEGER,
+            waterDefence INTEGER,
+            airDefence INTEGER,
+            magicDefence INTEGER,
+            fireDefence INTEGER,
+            earthDefence INTEGER,
+            heroicDefence INTEGER,
+            blockRate INTEGER,
+            physicalAttackRate INTEGER,
+            attackSpeed INTEGER,
+            attackRange INTEGER,
+            minDamage INTEGER,
+            maxDamage INTEGER,
+            randomAbilitiesNumber INTEGER,
+            bonusHp INTEGER,
+            hpRecovered INTEGER,
+            manaRecovered INTEGER,
+            mountRunBuff INTEGER
         )
         """
         cursor.execute(create_table_query)
@@ -402,17 +400,17 @@ def create_items_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS items (
             id SERIAL PRIMARY KEY,
-            "archlordItemId" INTEGER NOT NULL,
-            "itemId" TEXT UNIQUE NOT NULL,
-            "itemTypeKind" TEXT,
-            "name" TEXT,
-            "imageSource" TEXT,
-            "characterId" TEXT NOT NULL,
-            "stack" INTEGER,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+            archlordItemId INTEGER NOT NULL,
+            itemId TEXT UNIQUE NOT NULL,
+            itemTypeKind TEXT,
+            name TEXT,
+            imageSource TEXT,
+            characterId TEXT NOT NULL,
+            stack INTEGER,
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER NOT NULL DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER NOT NULL DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -422,7 +420,6 @@ def create_items_table(conn):
 
     except Exception as e:
         print(f"Error: {e}")
-
 
 
 def create_craftable_items_database_table(conn):
@@ -436,15 +433,11 @@ def create_craftable_items_database_table(conn):
         create_table_query = """
         CREATE TABLE IF NOT EXISTS craftable_items_database (
             id SERIAL PRIMARY KEY,
-            "itemId" TEXT NOT NULL,
-            "itemName" TEXT NOT NULL,
-            "itemTypeKindId" TEXT NOT NULL,
-            "itemRarityTypeId" TEXT NOT NULL,
-            "itemCategory" TEXT NOT NULL,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+            itemId TEXT NOT NULL,
+            itemName TEXT NOT NULL,
+            itemTypeKindId TEXT NOT NULL,
+            itemRarityTypeId TEXT NOT NULL,
+            itemCategory TEXT NOT NULL
         )
         """
         cursor.execute(create_table_query)
@@ -465,13 +458,13 @@ def create_crafting_requirements_database_table(conn):
 
         create_table_query = """
         CREATE TABLE IF NOT EXISTS crafting_requirements_database (
-            "itemId" TEXT NOT NULL,
-            "itemNeededId" INTEGER NOT NULL,
-            "itemAmount" INTEGER NOT NULL,
-            "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-            "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-            "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+            itemId TEXT NOT NULL,
+            itemNeededId INTEGER NOT NULL,
+            itemAmount INTEGER NOT NULL,
+            updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            updateUserTypeId INTEGER NOT NULL DEFAULT 1,
+            insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+            insertUserTypeId INTEGER NOT NULL DEFAULT 1
         )
         """
         cursor.execute(create_table_query)
@@ -491,15 +484,15 @@ def create_character_inventory_slots_table(conn):
                 tab_id INTEGER NOT NULL,
                 slot_index INTEGER NOT NULL,
                 item_id TEXT NOT NULL UNIQUE,
-                "updateDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-                "updateUserTypeId" INTEGER NOT NULL DEFAULT 1,
-                "insertDateTime" TIMESTAMP NOT NULL DEFAULT NOW(),
-                "insertUserTypeId" INTEGER NOT NULL DEFAULT 1
+                updateDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+                updateUserTypeId INTEGER NOT NULL DEFAULT 1,
+                insertDateTime TIMESTAMP NOT NULL DEFAULT NOW(),
+                insertUserTypeId INTEGER NOT NULL DEFAULT 1,
                 PRIMARY KEY (character_id, tab_id, slot_index),
                 FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE,
                 FOREIGN KEY (item_id) REFERENCES items(itemId) ON DELETE CASCADE,
                 CHECK (tab_id >= 0 AND tab_id <= 4),
-                CHECK (slot_index >= 0 AND slot_index <= 24),
+                CHECK (slot_index >= 0 AND slot_index <= 24)
             )"""
             cursor.execute(create_table_query)
             conn.commit()
@@ -549,19 +542,19 @@ def init_db():
         create_requirements_table(conn)
         create_methods_table(conn)
         create_rewards_table(conn)
-        #create_items_database_table(conn)
+        create_items_database_table(conn)
         create_items_table(conn)
         create_craftable_items_database_table(conn)
         create_crafting_requirements_database_table(conn)
         create_character_inventory_slots_table(conn)
         print("Wszystkie tabele utworzone w PostgreSQL.")
 
-        insert_crafting_requirements_database(conn, 3281, 3281, 1)
-        insert_crafting_requirements_database(conn, 3281, 266, 1)
-        insert_crafting_requirements_database(conn, 3281, 262, 1)
-        insert_crafting_requirements_database(conn, 3281, 258, 1)
-        insert_crafting_requirements_database(conn, 3281, 2118, 1)
-        insert_crafting_requirements_database(conn, 3281, 4802, 5000)
+        #insert_crafting_requirements_database(conn, 3281, 3281, 1)
+        #insert_crafting_requirements_database(conn, 3281, 266, 1)
+        #insert_crafting_requirements_database(conn, 3281, 262, 1)
+        #insert_crafting_requirements_database(conn, 3281, 258, 1)
+        #insert_crafting_requirements_database(conn, 3281, 2118, 1)
+        #insert_crafting_requirements_database(conn, 3281, 4802, 5000)
     
         insert_craftable_items_database_table(conn, 3281, "Advance Crossbow", "weapon", "normal_item", "Crossbow") 
         print("Uzupełniono dane w tabelach PostgreSQL.")
