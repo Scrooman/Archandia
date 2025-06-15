@@ -548,7 +548,7 @@ def are_all_requirements_met_for_task(task_id):
 
         # Sprawdź, czy którykolwiek areRequirementsMet == 0
         for req in requirements:
-            if req[0] == 0:
+            if req[0] == False:
                 return False
         return True
     finally:

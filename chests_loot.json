@@ -2,32 +2,32 @@
     "3616": {
         "lootItemsType": {
             "weapon": {
-                "two_handed_sword": 100,
-                "two_handed_halberd": 100,
-                "one_handed_sword": 100,
-                "one_handed_axe": 100,
-                "one_handed_blunt": 100,
-                "wand": 100,
-                "staff": 100,
-                "dagger": 100,
-                "rapier": 100,
-                "karon": 100,
-                "xenon": 100,
-                "crossbow": 100,
-                "bow": 100,
-                "chakram": 100,
-                "kataria": 100
+                "Two Handed Sword": 100,
+                "Two Handed Halberd": 100,
+                "One Handed Sword": 100,
+                "One Handed Axe": 100,
+                "One Handed Blunt": 100,
+                "Wand": 100,
+                "Staff": 100,
+                "Dagger": 100,
+                "Rapier": 100,
+                "Karon": 100,
+                "Xenon": 100,
+                "Crossbow": 100,
+                "Bow": 100,
+                "Chakram": 100,
+                "Kataria": 100
             },
             "armor": {
-                "chest": 100,
-                "feet": 100,
-                "hands": 100,
-                "head": 100,
-                "legs": 100,
-                "shield": 100
+                "Chest": 100,
+                "Feet": 100,
+                "Hands": 100,
+                "Head": 100,
+                "Legs": 100,
+                "Shield": 100
             },
             "accessory": {
-                "accessory": 100
+                "Accessory": 100
             }
         },
         "lootItemRarityTypes": ["elite_item"],
@@ -40,32 +40,32 @@
     "3617": {
         "lootItemsType": {
             "weapon": {
-                "two_handed_sword": 100,
-                "two_handed_halberd": 100,
-                "one_handed_sword": 100,
-                "one_handed_axe": 100,
-                "one_handed_blunt": 100,
-                "wand": 100,
-                "staff": 100,
-                "dagger": 100,
-                "rapier": 100,
-                "karon": 100,
-                "xenon": 100,
-                "crossbow": 100,
-                "bow": 100,
-                "chakram": 100,
-                "kataria": 100
+                "Two Handed Sword": 100,
+                "Two Handed Halberd": 100,
+                "One Handed Sword": 100,
+                "One Handed Axe": 100,
+                "One Handed Blunt": 100,
+                "Wand": 100,
+                "Staff": 100,
+                "Dagger": 100,
+                "Rapier": 100,
+                "Karon": 100,
+                "Xenon": 100,
+                "Crossbow": 100,
+                "Bow": 100,
+                "Chakram": 100,
+                "Kataria": 100
             },
             "armor": {
-                "chest": 100,
-                "feet": 100,
-                "hands": 100,
-                "head": 100,
-                "legs": 100,
-                "shield": 100
+                "Chest": 100,
+                "Feet": 100,
+                "Hands": 100,
+                "Head": 100,
+                "Legs": 100,
+                "Shield": 100
             },
             "accessory": {
-                "accessory": 100
+                "Accessory": 100
             }
         },
         "lootItemRarityTypes": ["rare_item"],
