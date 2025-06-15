@@ -1,7 +1,6 @@
 import jwt # type: ignore
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime, timedelta
-import sqlite3
 import psycopg2
 import bcrypt # type: ignore
 import uuid
@@ -162,8 +161,9 @@ def update_task_status_in_db(task_id, new_status):
         cursor.execute("UPDATE tasks SET taskStatus = %s, updateDatetime = NOW() WHERE id = %s", (new_status, task_id))
         conn.commit()
         print("Task status updated successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -188,8 +188,9 @@ def update_task_start_and_active_time_in_db(task_id, task_start_time, task_activ
         )
         conn.commit()
         print("Task available time updated successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -206,8 +207,9 @@ def update_task_active_time_in_db(task_id, task_active_to_time):
         )
         conn.commit()
         print("Task active time updated successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -256,9 +258,9 @@ def insert_task_data_to_db(task_data, task_type, character_id):
         if cursor:
             cursor.close()
         return task_id
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
-        return None
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
         return None
@@ -342,9 +344,9 @@ def create_manual_for_character_in_db_and_return_id(task_id, craftable_item_id):
         print("Manual created successfully.")
 
         return manual_id
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
-        return None
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
         return None
@@ -407,8 +409,9 @@ def create_requirements_for_manual_in_db(manual_id, item_id):
         """, data_requirements)
         conn.commit()
         print("Requirements created successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -434,8 +437,9 @@ def create_blacksmith_for_manual_in_db(manual_id, task_localization_data):
         """, task_localization_data)
         conn.commit()
         print("Blacksmith created successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -662,7 +666,7 @@ def insert_item_into_first_available_characters_inventory_slot(character_id, upd
 
         return jsonify({"message": "Ekwipunek zaktualizowany pomyślnie", "applied_updates": final_updates}), 200
 
-    except sqlite3.IntegrityError as e:
+    except psycopg2.IntegrityError as e:
         conn.rollback()
         return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
@@ -784,9 +788,9 @@ def create_item_by_id_from_db(item_archlord_db_id, character_id, amount=None):
                 ]
                 insert_item_into_first_available_characters_inventory_slot(character_id, updates)
                 return new_item_id
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
-        return None
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     finally:
         conn.close()
 

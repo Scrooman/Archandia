@@ -1,7 +1,6 @@
 import jwt # type: ignore
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime, timedelta
-import sqlite3
 import psycopg2
 import bcrypt # type: ignore
 import uuid
@@ -191,8 +190,9 @@ def check_requirements():
                 cursor.execute("UPDATE tasks SET taskStatus = 'Completed', taskActiveToDateTime = NOW(), taskCompletionDateTime = NOW(), isRewardGiven = 1, updateDatetime = NOW() WHERE id = %s", (task_id,))
                 conn.commit()
                 print("Task status updated successfully.")
-            except sqlite3.Error as e:
-                print(f"Database error: {e}")
+            except psycopg2.IntegrityError as e:
+                conn.rollback()
+                return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
             except Exception as e:
                 print(f"Error: {e}")
             finally:

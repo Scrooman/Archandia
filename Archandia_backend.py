@@ -550,8 +550,9 @@ def update_order_id_in_db(task_id, order_id):
         cursor.execute("UPDATE tasks SET orderId = %s, updateDatetime =  WHERE id = %s", (order_id, task_id))
         conn.commit()
         print("Order ID updated successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -565,8 +566,9 @@ def update_recipe_corelation_id_in_db(manual_id, recipe_corelation_id):
         cursor.execute("UPDATE manuals SET recipeCorelationId = %s, updateDatetime =  WHERE id = %s", (recipe_corelation_id, manual_id))
         conn.commit()
         print("Recipe corelation ID updated successfully.")
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
         print(f"Error: {e}")
     finally:

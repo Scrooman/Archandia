@@ -1,10 +1,8 @@
-import sqlite3
 import psycopg2
 import os
 import random
 import json
 import datetime
-import sqlite3
 import json
 import bcrypt # type: ignore
 import uuid

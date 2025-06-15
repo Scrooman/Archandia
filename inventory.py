@@ -1,7 +1,6 @@
 import jwt # type: ignore
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime, timedelta
-import sqlite3
 import psycopg2
 import bcrypt # type: ignore
 import uuid
@@ -145,7 +144,7 @@ def update_character_inventory(character_id):
 
         return jsonify({"message": "Ekwipunek zaktualizowany pomyślnie", "applied_updates": final_updates}), 200
 
-    except sqlite3.IntegrityError as e:
+    except psycopg2.IntegrityError as e:
         conn.rollback()
         return jsonify({"error": "Błąd integralności bazy danych", "details": str(e)}), 500
     except Exception as e:
