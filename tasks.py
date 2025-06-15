@@ -100,8 +100,8 @@ def get_character_tasks(character_id):
 def start_task(task_id):
     try:
         update_task_status_in_db(task_id, "In Progress")
-        task_ActiveToDateTime = (datetime.now() + timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S")
-        update_task_start_and_active_time_in_db(task_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), task_ActiveToDateTime)
+        task_ActiveToDateTime = datetime.now() + timedelta(hours=24)
+        update_task_start_and_active_time_in_db(task_id, datetime.now(), task_ActiveToDateTime)
         return jsonify({"status": "ok", "success": True, "message": "Task status updated successfully"}), 200
     except Exception as e:
         return jsonify({"status": "error", "success": False, "error": str(e)}), 500
@@ -112,7 +112,7 @@ def start_task(task_id):
 def cancel_task(task_id):
     try:
         update_task_status_in_db(task_id, "Cancelled")
-        update_task_active_time_in_db(task_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        update_task_active_time_in_db(task_id, datetime.now())
         return jsonify({"status": "ok", "success": True, "message": "Task status updated successfully"}), 200
     except Exception as e:
         return jsonify({"status": "error", "success": False, "error": str(e)}), 500

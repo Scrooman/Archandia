@@ -178,6 +178,7 @@ def update_task_start_and_active_time_in_db(task_id, task_start_time, task_activ
         cursor.execute("SELECT taskAvailableToDateTime FROM tasks WHERE id = %s", (task_id,))
         row = cursor.fetchone()
         if row:
+            print(f"Current taskAvailableToDateTime for task {task_id}: {row[0]}")
             task_available_to_datetime = row[0]
             # Jeśli taskAvailableToDateTime < task_active_to_time, ustaw taskActiveToDateTime na taskAvailableToDateTime
             if task_available_to_datetime < task_active_to_time:
@@ -220,7 +221,7 @@ def insert_task_data_to_db(task_data, task_type, character_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     task_id = generate_base64_uuid()
-    task_available_to_date_time = (datetime.now() + timedelta(days=2)).strftime("%Y-%m-%d %H:%M:%S")
+    task_available_to_date_time = datetime.now() + timedelta(days=2)
     order_id = None
 
     try:
@@ -338,7 +339,7 @@ def create_manual_for_character_in_db_and_return_id(task_id, craftable_item_id):
             item_info["name"],
             item_info["itemTypeKindId"],
             item_info["itemCategory"],
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            datetime.now()
         ))
         conn.commit()
         print("Manual created successfully.")
