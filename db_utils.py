@@ -379,20 +379,21 @@ def create_requirements_for_manual_in_db(manual_id, item_id):
     for req in requirements_from_db:
         print("Processing requirement:", req)
         print("Manual ID:", manual_id)
-        if not req.get("itemneededid"):
-            print("Skipping requirement with missing itemneededid.")
+        if not req.get("itemNeededId"):
+            print("Skipping requirement with missing itemNeededId.")
             continue
         data_requirements.append((
             manual_id,
-            req.get("itemneededid"),
+            req.get("itemNeededId"),
             req.get("name"),
-            req.get("itemraritytypeid"),
-            req.get("itemtypekindid"),
-            req.get("itemamount"),
+            req.get("itemRarityTypeId"),
+            req.get("itemTypeKindId"),
+            req.get("itemAmount"),
             None,  # itemRarityGiven
             None,  # itemAmountGiven
             False  # areRequirementsMet
-    ))
+        ))
+        print("Prepared requirement data:", data_requirements[-1])
 
     try:
         cursor.executemany("""
